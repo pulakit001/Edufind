@@ -118,7 +118,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                 <SelectTrigger className="form-input text-lg h-14">
                   <SelectValue placeholder="Select education level" />
                 </SelectTrigger>
-                <SelectContent className="bg-card border border-border rounded-lg shadow-lg z-50">
+                <SelectContent className="bg-card border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
                   {educationLevels.map(level => (
                     <SelectItem key={level} value={level} className="p-3 hover:bg-muted rounded-md">
                       {level}
@@ -140,7 +140,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                 <SelectTrigger>
                   <SelectValue placeholder="Select academic stream" />
                 </SelectTrigger>
-                <SelectContent className="bg-card border border-border rounded-lg shadow-lg z-50">
+                <SelectContent className="bg-card border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
                   {academicStreams.map(stream => (
                     <SelectItem key={stream} value={stream} className="p-3 hover:bg-muted rounded-md">{stream}</SelectItem>
                   ))}
@@ -157,9 +157,9 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
               <h2 className="text-section-title mb-2">Specific Majors / Subjects</h2>
               <p className="text-subtle mb-4">Select all majors that interest you</p>
               
-              <div className="grid grid-cols-2 gap-2 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
                 {majorOptions.map(major => (
-                  <div key={major} className="flex items-center space-x-2">
+                  <div key={major} className="flex items-center space-x-2 p-2 hover:bg-muted/50 rounded">
                     <Checkbox 
                       checked={formData.specificMajors.includes(major)}
                       onCheckedChange={() => {
@@ -170,19 +170,21 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                         }
                       }}
                     />
-                    <label className="text-sm">{major}</label>
+                    <label className="text-sm cursor-pointer flex-1">{major}</label>
                   </div>
                 ))}
               </div>
 
-              <div className="flex gap-2 mb-4">
+              <div className="flex flex-col sm:flex-row gap-2 mb-4">
                 <Input 
                   placeholder="Add custom major"
                   value={customMajor}
                   onChange={(e) => setCustomMajor(e.target.value)}
+                  className="flex-1"
                 />
-                <Button onClick={addMajor} size="icon" variant="outline">
+                <Button onClick={addMajor} size="icon" variant="outline" className="w-10 h-10 sm:w-auto sm:h-auto sm:px-3">
                   <Plus className="w-4 h-4" />
+                  <span className="hidden sm:inline ml-1">Add</span>
                 </Button>
               </div>
 
@@ -235,8 +237,8 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
             <div>
               <h2 className="text-section-title mb-2">Preferred Location</h2>
               <p className="text-subtle mb-4">Where would you like to study?</p>
-              <div className="grid grid-cols-1 gap-4">
-                <div>
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="sm:col-span-2">
                   <Label htmlFor="country">Country *</Label>
                   <Input 
                     id="country"
@@ -263,13 +265,14 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                     onChange={(e) => updateLocation('city', e.target.value)}
                   />
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <Label htmlFor="details">Additional location preferences</Label>
                   <Textarea 
                     id="details"
                     placeholder="e.g., Prefer colleges near tech hubs with good weather and startup ecosystem"
                     value={formData.location.freeText}
                     onChange={(e) => updateLocation('freeText', e.target.value)}
+                    rows={3}
                   />
                 </div>
               </div>
@@ -333,7 +336,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
               <p className="text-subtle mb-4">Add any entrance exams you've taken or plan to take</p>
               
               <div className="space-y-4">
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Input 
                     placeholder="Exam name (e.g., JEE, NEET, SAT)"
                     value={customExam.name}
@@ -346,8 +349,9 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                     onChange={(e) => setCustomExam({...customExam, score: e.target.value})}
                     className="flex-1"
                   />
-                  <Button onClick={addExam} size="icon" variant="outline">
+                  <Button onClick={addExam} size="icon" variant="outline" className="w-10 h-10 sm:w-auto sm:h-auto sm:px-3">
                     <Plus className="w-4 h-4" />
+                    <span className="hidden sm:inline ml-1">Add</span>
                   </Button>
                 </div>
 

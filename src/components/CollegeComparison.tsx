@@ -32,45 +32,7 @@ const defaultMetrics: ComparisonMetric[] = [
   { id: 'diversity', name: 'Campus Diversity', selected: false }
 ];
 
-// Mock comparison data
-const mockComparisonData = {
-  "IIT Bombay": {
-    fees: "₹2.5L / year",
-    campus: "★★★★★",
-    placements: "35 LPA avg",
-    faculty: "1:8",
-    research: "Excellent",
-    exchange: "Available",
-    ranking: "Top 3 in India",
-    alumni: "Exceptional",
-    location: "Mumbai - Urban",
-    diversity: "High"
-  },
-  "BITS Pilani": {
-    fees: "₹4L / year", 
-    campus: "★★★★☆",
-    placements: "20 LPA avg",
-    faculty: "1:12",
-    research: "Good",
-    exchange: "Limited",
-    ranking: "Top 10 in India",
-    alumni: "Strong",
-    location: "Pilani - Remote",
-    diversity: "Moderate"
-  },
-  "NIT Trichy": {
-    fees: "₹1.8L / year",
-    campus: "★★★☆☆", 
-    placements: "14 LPA avg",
-    faculty: "1:15",
-    research: "Moderate",
-    exchange: "Not Available",
-    ranking: "Top 15 in India",
-    alumni: "Good",
-    location: "Trichy - Town",
-    diversity: "Moderate"
-  }
-};
+// Removed mock comparison data
 
 export function CollegeComparison() {
   const [colleges, setColleges] = useState<CollegeInput[]>([
@@ -80,7 +42,7 @@ export function CollegeComparison() {
   ]);
   const [metrics, setMetrics] = useState<ComparisonMetric[]>(defaultMetrics);
   const [customMetric, setCustomMetric] = useState('');
-  const [comparisonResults, setComparisonResults] = useState<any>(null);
+  const [comparisonPrompt, setComparisonPrompt] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -151,44 +113,14 @@ Format the response as:
     try {
       // Generate comparison prompt
       const prompt = generateComparisonPrompt();
-      console.log('Generated Comparison Prompt:', prompt);
+      setComparisonPrompt(prompt);
 
-      // Simulate API call - replace with actual AI service
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Mock results using our sample data
-      const results = filledColleges.reduce((acc, college) => {
-        const collegeName = college.name;
-        const collegeData = mockComparisonData[collegeName as keyof typeof mockComparisonData];
-        
-        if (collegeData) {
-          acc[collegeName] = collegeData;
-        } else {
-          // Generate mock data for unknown colleges
-          acc[collegeName] = {
-            fees: "₹3L / year",
-            campus: "★★★☆☆", 
-            placements: "18 LPA avg",
-            faculty: "1:12",
-            research: "Good",
-            exchange: "Available",
-            ranking: "Regional",
-            alumni: "Moderate",
-            location: "Urban",
-            diversity: "Moderate"
-          };
-        }
-        return acc;
-      }, {} as any);
-
-      setComparisonResults({
-        colleges: results,
-        summary: "Based on the comparison, each college has unique strengths. IIT Bombay leads in placements and research, BITS Pilani offers good industry exposure, while NIT Trichy provides excellent value for money."
-      });
+      // Simulate loading
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast({
-        title: "Comparison Complete!",
-        description: "Your college comparison is ready.",
+        title: "Comparison Prompt Generated!",
+        description: "You can now copy this prompt to use with ChatGPT or other AI services.",
       });
 
     } catch (error) {
@@ -204,14 +136,14 @@ Format the response as:
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="max-w-6xl mx-auto p-4 sm:p-6">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-hero text-foreground mb-2">Compare Colleges</h1>
-          <p className="text-muted-foreground">Add up to 3 colleges and select comparison metrics</p>
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-hero text-foreground mb-2">Compare Colleges</h1>
+          <p className="text-sm sm:text-base text-muted-foreground px-4">Add up to 3 colleges and select comparison metrics</p>
         </div>
 
-        {!comparisonResults ? (
+        {!comparisonPrompt ? (
           <>
             {/* College Inputs */}
             <Card className="p-6 mb-6">
@@ -219,15 +151,16 @@ Format the response as:
                 <BarChart3 className="w-5 h-5" />
                 Colleges to Compare
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mb-4">
                 {colleges.map((college, index) => (
                   <div key={college.id}>
-                    <Label htmlFor={`college-${college.id}`}>College {index + 1}</Label>
+                    <Label htmlFor={`college-${college.id}`} className="text-sm">College {index + 1}</Label>
                     <Input
                       id={`college-${college.id}`}
                       placeholder="Enter college name"
                       value={college.name}
                       onChange={(e) => updateCollegeName(college.id, e.target.value)}
+                      className="mt-1"
                     />
                   </div>
                 ))}
@@ -240,106 +173,86 @@ Format the response as:
             {/* Comparison Metrics */}
             <Card className="p-6 mb-6">
               <h2 className="text-section-title mb-4">Comparison Metrics</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 mb-4">
                 {metrics.map(metric => (
-                  <div key={metric.id} className="flex items-center space-x-2">
+                  <div key={metric.id} className="flex items-center space-x-2 p-2 hover:bg-muted/50 rounded">
                     <Checkbox 
                       checked={metric.selected}
                       onCheckedChange={() => toggleMetric(metric.id)}
                     />
-                    <label className="text-sm">{metric.name}</label>
+                    <label className="text-sm cursor-pointer flex-1">{metric.name}</label>
                   </div>
                 ))}
               </div>
               
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Input 
                   placeholder="Add custom metric"
                   value={customMetric}
                   onChange={(e) => setCustomMetric(e.target.value)}
+                  className="flex-1"
                 />
-                <Button onClick={addCustomMetric} size="icon" variant="outline">
+                <Button onClick={addCustomMetric} size="icon" variant="outline" className="w-10 h-10 sm:w-auto sm:h-auto sm:px-3">
                   <Plus className="w-4 h-4" />
+                  <span className="hidden sm:inline ml-1">Add</span>
                 </Button>
               </div>
             </Card>
 
             {/* Compare Button */}
-            <div className="text-center">
+            <div className="text-center px-4">
               <Button 
                 onClick={handleCompare}
                 disabled={isLoading}
-                className="px-12 py-3 bg-accent text-accent-foreground hover:bg-accent/90"
+                className="w-full sm:w-auto px-8 sm:px-12 py-3 bg-accent text-accent-foreground hover:bg-accent/90"
                 size="lg"
               >
-                {isLoading ? 'Comparing Colleges...' : 'Compare Now'}
+                {isLoading ? 'Generating Prompt...' : 'Generate Comparison Prompt'}
               </Button>
             </div>
           </>
         ) : (
           <>
-            {/* Comparison Results */}
-            <Card className="p-6 mb-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-section-title">Comparison Results</h2>
+            {/* Generated Prompt Display */}
+            <Card className="p-4 sm:p-6 mb-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+                <h2 className="text-lg sm:text-section-title">Generated Comparison Prompt</h2>
                 <Button 
-                  onClick={() => setComparisonResults(null)}
+                  onClick={() => setComparisonPrompt('')}
                   variant="outline"
+                  size="sm"
                 >
                   New Comparison
                 </Button>
               </div>
 
-              {/* Comparison Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="border-b border-border">
-                      <th className="text-left p-3 font-medium">Metric</th>
-                      {Object.keys(comparisonResults.colleges).map(college => (
-                        <th key={college} className="text-left p-3 font-medium">{college}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {metrics.filter(m => m.selected).map(metric => (
-                      <tr key={metric.id} className="border-b border-border hover:bg-muted/50">
-                        <td className="p-3 font-medium">{metric.name}</td>
-                        {Object.keys(comparisonResults.colleges).map(college => (
-                          <td key={college} className="p-3">
-                            {comparisonResults.colleges[college][metric.id] || 'N/A'}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="bg-muted/30 p-4 sm:p-6 rounded-lg border border-border">
+                <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground font-mono leading-relaxed overflow-x-auto">
+                  {comparisonPrompt}
+                </pre>
               </div>
-            </Card>
-
-            {/* AI Summary */}
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-4">AI Analysis Summary</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {comparisonResults.summary}
-              </p>
               
-              <div className="mt-6 space-y-4">
-                <h4 className="font-medium">Key Recommendations:</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 bg-muted rounded-lg">
-                    <h5 className="font-medium text-success mb-2">Best for Placements</h5>
-                    <p className="text-sm text-muted-foreground">IIT Bombay with 35 LPA average package</p>
-                  </div>
-                  <div className="p-4 bg-muted rounded-lg">
-                    <h5 className="font-medium text-accent mb-2">Best Value for Money</h5>
-                    <p className="text-sm text-muted-foreground">NIT Trichy with excellent ROI</p>
-                  </div>
-                  <div className="p-4 bg-muted rounded-lg">
-                    <h5 className="font-medium text-warning mb-2">Best Industry Exposure</h5>
-                    <p className="text-sm text-muted-foreground">BITS Pilani with strong corporate ties</p>
-                  </div>
-                </div>
+              <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-xs sm:text-sm text-yellow-800">
+                  <strong>Instructions:</strong> Copy this prompt and paste it into ChatGPT, Claude, or any other AI service to get detailed college comparisons. The AI will analyze your selected colleges and metrics to provide comprehensive recommendations.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6">
+                <Button 
+                  onClick={() => navigator.clipboard.writeText(comparisonPrompt)}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Copy Prompt
+                </Button>
+                <Button 
+                  onClick={() => setComparisonPrompt('')}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Generate New Prompt
+                </Button>
               </div>
             </Card>
           </>
