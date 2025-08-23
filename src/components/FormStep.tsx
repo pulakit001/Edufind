@@ -110,17 +110,19 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
     switch (step) {
       case 0:
         return (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
-              <h2 className="text-section-title mb-2">What level of education are you planning to pursue?</h2>
-              <p className="text-subtle mb-4">Choose the degree level that matches your goals</p>
+              <h2 className="text-section-title mb-4 text-foreground">What level of education are you planning to pursue?</h2>
+              <p className="text-subtle mb-6 text-lg">Choose the degree level that matches your goals and aspirations</p>
               <Select value={formData.educationLevel} onValueChange={(value) => updateFormData('educationLevel', value)}>
-                <SelectTrigger>
+                <SelectTrigger className="form-input text-lg h-14">
                   <SelectValue placeholder="Select education level" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-card border-2 border-border/60 rounded-xl shadow-xl">
                   {educationLevels.map(level => (
-                    <SelectItem key={level} value={level}>{level}</SelectItem>
+                    <SelectItem key={level} value={level} className="p-4 text-base hover:bg-accent/10 rounded-lg">
+                      {level}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>

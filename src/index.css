@@ -6,59 +6,67 @@
 
 @layer base {
   :root {
-    /* Core monochrome palette */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 7%;
+    /* Core sophisticated palette */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 8%;
     
     /* Panel and card backgrounds */
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
     
     /* Subtle UI elements */
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 48%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 42%;
     
-    /* Interactive elements */
-    --primary: 0 0% 7%;
+    /* Interactive elements - BLACK ACCENT */
+    --primary: 0 0% 8%;
     --primary-foreground: 0 0% 98%;
     
-    /* Accent color for CTAs and focus states */
-    --accent: 199 89% 48%;
+    /* Black accent for CTAs and focus states */
+    --accent: 0 0% 8%;
     --accent-foreground: 0 0% 98%;
     
     /* Secondary actions */
-    --secondary: 0 0% 94%;
-    --secondary-foreground: 0 0% 7%;
+    --secondary: 0 0% 88%;
+    --secondary-foreground: 0 0% 8%;
     
     /* Form elements */
-    --input: 0 0% 94%;
-    --border: 0 0% 89%;
-    --ring: 199 89% 48%;
+    --input: 0 0% 96%;
+    --border: 0 0% 85%;
+    --ring: 0 0% 8%;
     
     /* Progress and states */
-    --progress-bg: 0 0% 94%;
-    --progress-fill: 199 89% 48%;
+    --progress-bg: 0 0% 90%;
+    --progress-fill: 0 0% 8%;
     
-    /* Subtle shadows and overlays */
-    --shadow-soft: 0 0% 0% / 0.04;
-    --overlay: 0 0% 0% / 0.5;
+    /* Gradients and overlays */
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 20%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(0 0% 97%));
+    --gradient-hover: linear-gradient(135deg, hsl(0 0% 12%), hsl(0 0% 8%));
+    
+    /* Shadows */
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --shadow-glow: 0 0 0 1px rgba(0, 0, 0, 0.1);
     
     /* Semantic colors */
-    --destructive: 0 84% 60%;
+    --destructive: 0 65% 51%;
     --destructive-foreground: 0 0% 98%;
     
-    --success: 142 76% 36%;
+    --success: 120 60% 30%;
     --success-foreground: 0 0% 98%;
     
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 7%;
+    --warning: 38 92% 45%;
+    --warning-foreground: 0 0% 8%;
     
-    /* Spacing and layout */
-    --radius: 0.75rem;
-    --radius-sm: 0.5rem;
-    --radius-lg: 1rem;
+    /* Advanced spacing */
+    --radius: 0.875rem;
+    --radius-sm: 0.625rem;
+    --radius-lg: 1.125rem;
+    --radius-xl: 1.5rem;
     
-    /* Typography */
+    /* Typography scale */
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;
     --font-size-base: 1rem;
@@ -67,10 +75,17 @@
     --font-size-2xl: 1.5rem;
     --font-size-3xl: 1.875rem;
     --font-size-4xl: 2.25rem;
+    --font-size-5xl: 3rem;
     
-    /* Transitions */
-    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Advanced transitions */
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Layout constants */
+    --sidebar-width: 280px;
+    --header-height: 80px;
+    --content-max-width: 1200px;
 
     --sidebar-background: 0 0% 98%;
 
@@ -140,7 +155,7 @@
 }
 
 @layer components {
-  /* Form components */
+  /* Advanced form components */
   .form-step {
     @apply transition-all duration-300 ease-in-out;
   }
@@ -153,51 +168,91 @@
     @apply opacity-100 translate-x-0;
   }
   
-  /* Progress indicators */
+  /* Enhanced progress indicators */
   .progress-step {
-    @apply relative flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-200;
+    @apply relative flex items-center justify-center w-10 h-10 rounded-xl border-2 transition-all duration-300;
   }
   
   .progress-step.completed {
-    @apply bg-accent border-accent text-accent-foreground;
+    @apply bg-accent border-accent text-accent-foreground shadow-md;
   }
   
   .progress-step.active {
-    @apply border-accent text-accent bg-background;
+    @apply border-accent text-accent bg-background shadow-sm;
   }
   
   .progress-step.inactive {
-    @apply border-border text-muted-foreground bg-background;
+    @apply border-border text-muted-foreground bg-muted;
   }
   
-  /* Card styles */
+  /* Premium card styles */
   .college-card {
-    @apply bg-card border border-border rounded-lg p-6 transition-all duration-200 hover:shadow-lg hover:border-accent/20;
+    @apply bg-card border border-border/60 rounded-xl p-8 transition-all duration-300 hover:shadow-xl hover:border-accent/30 hover:-translate-y-1;
   }
   
-  /* Button variants */
+  .feature-card {
+    @apply bg-gradient-to-br from-card to-muted/30 border border-border/40 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-accent/20;
+  }
+  
+  /* Modern button variants */
   .btn-ghost {
-    @apply bg-transparent hover:bg-muted text-foreground border-0;
+    @apply bg-transparent hover:bg-muted/80 text-foreground border-0 transition-all duration-200;
   }
   
   .btn-accent {
-    @apply bg-accent text-accent-foreground hover:bg-accent/90;
+    @apply bg-accent text-accent-foreground hover:bg-accent/95 shadow-md hover:shadow-lg transition-all duration-200;
   }
   
-  /* Typography utilities */
+  .btn-gradient {
+    @apply bg-gradient-to-r from-accent to-primary text-accent-foreground hover:shadow-lg transform hover:scale-105 transition-all duration-200;
+  }
+  
+  /* Enhanced typography */
   .text-hero {
-    @apply text-4xl font-bold tracking-tight;
+    @apply text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text;
   }
   
   .text-section-title {
-    @apply text-2xl font-semibold;
+    @apply text-3xl font-bold tracking-tight;
   }
   
   .text-card-title {
-    @apply text-lg font-semibold;
+    @apply text-xl font-bold;
   }
   
   .text-subtle {
-    @apply text-muted-foreground text-sm;
+    @apply text-muted-foreground text-base leading-relaxed;
+  }
+  
+  /* Special effects */
+  .glassmorphism {
+    @apply backdrop-blur-sm bg-card/80 border border-border/50;
+  }
+  
+  .gradient-border {
+    @apply border-2 border-transparent bg-gradient-to-r from-accent via-primary to-accent bg-clip-border;
+  }
+  
+  /* Navigation styles */
+  .nav-item {
+    @apply relative p-4 rounded-xl transition-all duration-300 group;
+  }
+  
+  .nav-item.active {
+    @apply bg-accent text-accent-foreground shadow-lg;
+  }
+  
+  .nav-item:not(.active):hover {
+    @apply bg-muted/60 transform translate-x-1;
+  }
+  
+  /* Input enhancements */
+  .form-input {
+    @apply border-2 border-border/60 focus:border-accent rounded-xl px-4 py-3 transition-all duration-200 focus:shadow-md;
+  }
+  
+  /* Sidebar enhancements */
+  .sidebar-enhanced {
+    @apply bg-gradient-to-b from-card to-muted/20 border-r-2 border-border/40 backdrop-blur-sm;
   }
 }

@@ -52,34 +52,47 @@ const mockRecommendations = [
 export function CollegeRecommendations({ formData, onBack }: CollegeRecommendationsProps) {
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto p-6">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button variant="ghost" onClick={onBack} className="flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
+      <div className="max-w-7xl mx-auto p-8">
+        {/* Enhanced Header */}
+        <div className="flex items-center gap-6 mb-12">
+          <Button variant="ghost" onClick={onBack} className="flex items-center gap-2 p-4 rounded-2xl hover:bg-muted/60 transition-all duration-300">
+            <ArrowLeft className="w-5 h-5" />
             Back to Form
           </Button>
-          <div>
-            <h1 className="text-hero text-foreground">Your College Recommendations</h1>
-            <p className="text-muted-foreground">AI-powered matches based on your preferences</p>
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/20 mb-4">
+              <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium text-accent">AI Analysis Complete</span>
+            </div>
+            <h1 className="text-hero text-foreground leading-tight">Your Perfect College Matches</h1>
+            <p className="text-xl text-muted-foreground mt-2">Discover institutions tailored specifically for your goals and preferences</p>
           </div>
         </div>
 
-        {/* Summary Card */}
-        <Card className="p-6 mb-8 bg-accent/5 border-accent/20">
-          <h2 className="text-section-title mb-4">Recommendation Summary</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div>
-              <span className="text-muted-foreground">Education Level:</span>
-              <div className="font-medium">{formData.educationLevel}</div>
+        {/* Enhanced Summary Card */}
+        <Card className="feature-card p-8 mb-12 bg-gradient-to-br from-accent/5 via-card to-muted/10 border-2 border-accent/20">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center">
+              <TrendingUp className="w-6 h-6 text-accent-foreground" />
             </div>
-            <div>
-              <span className="text-muted-foreground">Preferred Stream:</span>
-              <div className="font-medium">{formData.academicStream}</div>
+            <h2 className="text-section-title">Recommendation Summary</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-base">
+            <div className="p-4 bg-card/60 rounded-xl border border-border/40">
+              <span className="text-muted-foreground text-sm block mb-1">Education Level</span>
+              <div className="font-bold text-accent">{formData.educationLevel}</div>
             </div>
-            <div>
-              <span className="text-muted-foreground">Budget Range:</span>
-              <div className="font-medium">₹{formData.budget.selected.toLocaleString()}</div>
+            <div className="p-4 bg-card/60 rounded-xl border border-border/40">
+              <span className="text-muted-foreground text-sm block mb-1">Preferred Stream</span>
+              <div className="font-bold text-accent">{formData.academicStream}</div>
+            </div>
+            <div className="p-4 bg-card/60 rounded-xl border border-border/40">
+              <span className="text-muted-foreground text-sm block mb-1">Budget Range</span>
+              <div className="font-bold text-accent">₹{formData.budget.selected.toLocaleString()}</div>
+            </div>
+            <div className="p-4 bg-card/60 rounded-xl border border-border/40">
+              <span className="text-muted-foreground text-sm block mb-1">Matches Found</span>
+              <div className="font-bold text-accent">{mockRecommendations.length} Colleges</div>
             </div>
           </div>
         </Card>

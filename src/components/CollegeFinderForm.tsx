@@ -131,61 +131,107 @@ Focus on institutions that match the user's stated preferences and budget range.
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto p-6">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-hero text-foreground mb-2">Find Your Dream College</h1>
-          <p className="text-muted-foreground">Answer a few questions to get AI-powered recommendations</p>
+      <div className="max-w-5xl mx-auto p-8">
+        {/* Enhanced Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/20 mb-6">
+            <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+            <span className="text-sm font-medium text-accent">AI-Powered College Matching</span>
+          </div>
+          <h1 className="text-hero text-foreground mb-4">Find Your Dream College</h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Our advanced AI will analyze your preferences to recommend the perfect colleges for your future
+          </p>
         </div>
 
-        {/* Progress Bar */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-muted-foreground">Step {currentStep + 1} of {totalSteps}</span>
-            <span className="text-sm text-muted-foreground">{Math.round(((currentStep + 1) / totalSteps) * 100)}% Complete</span>
+        {/* Enhanced Progress Section */}
+        <div className="mb-12">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center gap-3">
+              <span className="text-lg font-bold text-foreground">Step {currentStep + 1}</span>
+              <span className="text-sm text-muted-foreground">of {totalSteps}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Progress:</span>
+              <span className="text-lg font-bold text-accent">{Math.round(((currentStep + 1) / totalSteps) * 100)}%</span>
+            </div>
           </div>
-          <div className="w-full bg-muted rounded-full h-2">
-            <div 
-              className="bg-accent h-2 rounded-full transition-all duration-300" 
-              style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
+          
+          {/* Enhanced Progress Bar */}
+          <div className="relative">
+            <div className="w-full bg-muted rounded-2xl h-3 shadow-inner">
+              <div 
+                className="bg-gradient-to-r from-accent to-primary h-3 rounded-2xl transition-all duration-500 shadow-md" 
+                style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
+              />
+            </div>
+            <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-2xl"></div>
+          </div>
+          
+          {/* Step Indicators */}
+          <div className="flex justify-between mt-6">
+            {Array.from({ length: totalSteps }, (_, i) => (
+              <div
+                key={i}
+                className={`progress-step ${
+                  i < currentStep ? 'completed' : i === currentStep ? 'active' : 'inactive'
+                }`}
+              >
+                <span className="text-xs font-bold">{i + 1}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Enhanced Form Content */}
+        <div className="relative">
+          <Card className="college-card shadow-xl border-2 border-border/30 p-10 mb-8 bg-gradient-to-br from-card to-muted/10">
+            <FormStep
+              step={currentStep}
+              formData={formData}
+              updateFormData={updateFormData}
             />
-          </div>
+          </Card>
         </div>
 
-        {/* Form Content */}
-        <Card className="p-8 mb-6">
-          <FormStep
-            step={currentStep}
-            formData={formData}
-            updateFormData={updateFormData}
-          />
-        </Card>
-
-        {/* Navigation */}
-        <div className="flex justify-between">
+        {/* Enhanced Navigation */}
+        <div className="flex justify-between items-center">
           <Button
             variant="outline"
             onClick={handlePrevious}
             disabled={currentStep === 0}
-            className="px-8"
+            className="px-10 py-4 text-base rounded-2xl border-2 border-border/60 hover:border-accent/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Previous
+            ← Previous
           </Button>
+
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <span>Step {currentStep + 1} of {totalSteps}</span>
+            <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+            <span>{Math.round(((currentStep + 1) / totalSteps) * 100)}% Complete</span>
+          </div>
 
           {currentStep === totalSteps - 1 ? (
             <Button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="px-8 bg-accent text-accent-foreground hover:bg-accent/90"
+              className="px-12 py-4 text-base btn-gradient rounded-2xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              {isLoading ? 'Generating Recommendations...' : 'Get My Recommendations'}
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full animate-spin"></div>
+                  Generating Recommendations...
+                </div>
+              ) : (
+                'Get My Recommendations ✨'
+              )}
             </Button>
           ) : (
             <Button
               onClick={handleNext}
-              className="px-8 bg-accent text-accent-foreground hover:bg-accent/90"
+              className="px-10 py-4 text-base btn-gradient rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
             >
-              Next
+              Next →
             </Button>
           )}
         </div>
