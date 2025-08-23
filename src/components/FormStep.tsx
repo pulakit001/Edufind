@@ -118,9 +118,9 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                 <SelectTrigger className="form-input text-lg h-14">
                   <SelectValue placeholder="Select education level" />
                 </SelectTrigger>
-                <SelectContent className="bg-card border-2 border-border/60 rounded-xl shadow-xl">
+                <SelectContent className="bg-card border border-border rounded-lg shadow-lg z-50">
                   {educationLevels.map(level => (
-                    <SelectItem key={level} value={level} className="p-4 text-base hover:bg-accent/10 rounded-lg">
+                    <SelectItem key={level} value={level} className="p-3 hover:bg-muted rounded-md">
                       {level}
                     </SelectItem>
                   ))}
@@ -140,9 +140,9 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                 <SelectTrigger>
                   <SelectValue placeholder="Select academic stream" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-card border border-border rounded-lg shadow-lg z-50">
                   {academicStreams.map(stream => (
-                    <SelectItem key={stream} value={stream}>{stream}</SelectItem>
+                    <SelectItem key={stream} value={stream} className="p-3 hover:bg-muted rounded-md">{stream}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -334,16 +334,12 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
               
               <div className="space-y-4">
                 <div className="flex gap-2">
-                  <Select value={customExam.name} onValueChange={(value) => setCustomExam({...customExam, name: value})}>
-                    <SelectTrigger className="flex-1">
-                      <SelectValue placeholder="Select exam" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {examOptions.map(exam => (
-                        <SelectItem key={exam} value={exam}>{exam}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input 
+                    placeholder="Exam name (e.g., JEE, NEET, SAT)"
+                    value={customExam.name}
+                    onChange={(e) => setCustomExam({...customExam, name: e.target.value})}
+                    className="flex-1"
+                  />
                   <Input 
                     placeholder="Score/Rank"
                     value={customExam.score}

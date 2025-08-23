@@ -23,9 +23,7 @@ const Dashboard = () => {
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar activeView={activeView} onViewChange={setActiveView} />
         <main className="flex-1 overflow-auto">
-          <div className="max-w-7xl mx-auto">
-            {renderContent()}
-          </div>
+          {renderContent()}
         </main>
       </div>
     </SidebarProvider>
