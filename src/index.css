@@ -235,7 +235,7 @@
   
   /* Navigation styles */
   .nav-item {
-    @apply relative p-4 rounded-xl transition-all duration-300 group;
+    @apply relative p-4 rounded-xl transition-all duration-300;
   }
   
   .nav-item.active {
