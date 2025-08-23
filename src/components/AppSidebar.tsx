@@ -41,20 +41,17 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
   return (
     <Sidebar className="border-r border-border bg-card">
       <SidebarContent className="p-2 sm:p-3 md:p-4">
-        {/* Header with Toggle */}
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-foreground rounded-lg flex items-center justify-center flex-shrink-0">
-              <Brain className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-background" />
-            </div>
-            {open && (
-              <div className="min-w-0 flex-1">
-                <h2 className="text-sm sm:text-base md:text-lg font-bold text-foreground truncate">EduMatch</h2>
-                <p className="text-xs text-muted-foreground truncate">Intelligent Matching</p>
-              </div>
-            )}
+        {/* Header */}
+        <div className="flex items-center gap-2 mb-4 sm:mb-6 min-w-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-foreground rounded-lg flex items-center justify-center flex-shrink-0">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-background" />
           </div>
-          <SidebarTrigger className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 flex-shrink-0" />
+          {open && (
+            <div className="min-w-0 flex-1">
+              <h2 className="text-sm sm:text-base md:text-lg font-bold text-foreground truncate">EduMatch</h2>
+              <p className="text-xs text-muted-foreground truncate">Intelligent Matching</p>
+            </div>
+          )}
         </div>
         
         <SidebarGroup>
