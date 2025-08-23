@@ -43,68 +43,69 @@ export function CollegeRecommendations({ formData, onBack }: CollegeRecommendati
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto p-8">
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8">
         {/* Header */}
-        <div className="flex items-center gap-6 mb-12">
-          <Button variant="ghost" onClick={onBack} className="flex items-center gap-2">
-            <ArrowLeft className="w-5 h-5" />
-            Back to Form
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
+          <Button variant="ghost" onClick={onBack} className="flex items-center gap-2 text-sm sm:text-base">
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Back to Form</span>
+            <span className="sm:hidden">Back</span>
           </Button>
           <div className="flex-1">
-            <h1 className="text-3xl font-bold text-foreground">AI Generated Prompt</h1>
-            <p className="text-muted-foreground mt-2">Here's the prompt that would be sent to the AI based on your preferences</p>
+            <h1 className="text-2xl sm:text-3xl md:text-hero font-bold text-foreground">AI Generated Prompt</h1>
+            <p className="text-sm sm:text-base text-muted-foreground mt-2">Here's the prompt that would be sent to the AI based on your preferences</p>
           </div>
         </div>
 
         {/* Summary Card */}
-        <Card className="p-8 mb-8 border border-border bg-card">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 bg-foreground rounded-lg flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-background" />
+        <Card className="p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 border border-border bg-card">
+          <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-foreground rounded-lg flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-background" />
             </div>
-            <h2 className="text-xl font-bold">Your Preferences Summary</h2>
+            <h2 className="text-lg sm:text-xl font-bold">Your Preferences Summary</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-4 bg-muted/50 rounded-lg">
-              <span className="text-sm text-muted-foreground block mb-1">Education Level</span>
-              <div className="font-semibold">{formData.educationLevel}</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
+              <span className="text-xs sm:text-sm text-muted-foreground block mb-1">Education Level</span>
+              <div className="font-semibold text-sm sm:text-base">{formData.educationLevel}</div>
             </div>
-            <div className="p-4 bg-muted/50 rounded-lg">
-              <span className="text-sm text-muted-foreground block mb-1">Academic Stream</span>
-              <div className="font-semibold">{formData.academicStream}</div>
+            <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
+              <span className="text-xs sm:text-sm text-muted-foreground block mb-1">Academic Stream</span>
+              <div className="font-semibold text-sm sm:text-base">{formData.academicStream}</div>
             </div>
-            <div className="p-4 bg-muted/50 rounded-lg">
-              <span className="text-sm text-muted-foreground block mb-1">Budget</span>
-              <div className="font-semibold">₹{formData.budget.selected.toLocaleString()}</div>
+            <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
+              <span className="text-xs sm:text-sm text-muted-foreground block mb-1">Budget</span>
+              <div className="font-semibold text-sm sm:text-base">₹{formData.budget.selected.toLocaleString()}</div>
             </div>
-            <div className="p-4 bg-muted/50 rounded-lg">
-              <span className="text-sm text-muted-foreground block mb-1">Majors</span>
-              <div className="font-semibold">{formData.specificMajors.length} selected</div>
+            <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
+              <span className="text-xs sm:text-sm text-muted-foreground block mb-1">Majors</span>
+              <div className="font-semibold text-sm sm:text-base">{formData.specificMajors.length} selected</div>
             </div>
           </div>
         </Card>
 
         {/* AI Prompt Display */}
-        <Card className="p-8 border border-border bg-card">
-          <h3 className="text-lg font-bold mb-4">Generated AI Prompt:</h3>
-          <div className="bg-muted/30 p-6 rounded-lg border border-border">
-            <pre className="whitespace-pre-wrap text-sm text-foreground font-mono leading-relaxed">
+        <Card className="p-4 sm:p-6 md:p-8 border border-border bg-card">
+          <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Generated AI Prompt:</h3>
+          <div className="bg-muted/30 p-4 sm:p-6 rounded-lg border border-border">
+            <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground font-mono leading-relaxed overflow-x-auto">
               {aiPrompt}
             </pre>
           </div>
-          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-sm text-yellow-800">
+          <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-xs sm:text-sm text-yellow-800">
               <strong>Note:</strong> This prompt would be sent to an AI service (like OpenAI, Claude, etc.) to generate personalized college recommendations based on your preferences. The AI would analyze your requirements and return a list of suitable colleges with detailed explanations.
             </p>
           </div>
         </Card>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mt-8">
-          <Button onClick={onBack} variant="outline" className="flex-1">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
+          <Button onClick={onBack} variant="outline" className="flex-1 py-3 text-sm sm:text-base">
             Refine Preferences
           </Button>
-          <Button className="flex-1 bg-foreground text-background hover:bg-foreground/90">
+          <Button className="flex-1 bg-foreground text-background hover:bg-foreground/90 py-3 text-sm sm:text-base">
             Send to AI (Not Implemented)
           </Button>
         </div>

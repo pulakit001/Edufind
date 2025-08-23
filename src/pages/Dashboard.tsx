@@ -19,11 +19,13 @@ const Dashboard = () => {
   };
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar activeView={activeView} onViewChange={setActiveView} />
         <main className="flex-1 overflow-auto">
-          {renderContent()}
+          <div className="w-full min-h-screen">
+            {renderContent()}
+          </div>
         </main>
       </div>
     </SidebarProvider>

@@ -16,7 +16,7 @@ const Index = () => {
                 <Brain className="w-5 h-5 sm:w-6 sm:h-6 text-accent-foreground" />
               </div>
               <div>
-                <h1 className="text-lg sm:text-xl font-bold text-foreground">CollegeFinder AI</h1>
+                <h1 className="text-lg sm:text-xl font-bold text-foreground">EduMatch</h1>
                 <p className="text-xs text-muted-foreground">Powered by Intelligence</p>
               </div>
             </div>
