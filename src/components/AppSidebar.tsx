@@ -63,8 +63,8 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
                     onClick={() => onViewChange(item.id)}
                     className={`w-full p-3 sm:p-4 md:p-5 rounded-lg transition-all duration-200 text-left min-h-[60px] sm:min-h-[70px] md:min-h-[80px] ${
                       activeView === item.id
-                        ? 'bg-foreground text-background'
-                        : 'text-foreground hover:bg-muted'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-foreground hover:bg-accent hover:text-accent-foreground'
                     }`}
                   >
                     <div className="flex items-center w-full min-w-0 gap-2 sm:gap-3">
