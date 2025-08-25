@@ -6,6 +6,7 @@ import type { FormData } from "./CollegeFinderForm";
 
 interface CollegeRecommendationsProps {
   formData: FormData;
+  aiResponse: string;
   onBack: () => void;
 }
 
@@ -38,9 +39,7 @@ Please provide detailed recommendations with:
 Format the response as a comprehensive analysis with actionable recommendations.`;
 };
 
-export function CollegeRecommendations({ formData, onBack }: CollegeRecommendationsProps) {
-  const aiPrompt = generateAIPrompt(formData);
-
+export function CollegeRecommendations({ formData, aiResponse, onBack }: CollegeRecommendationsProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8">
@@ -52,8 +51,8 @@ export function CollegeRecommendations({ formData, onBack }: CollegeRecommendati
             <span className="sm:hidden">Back</span>
           </Button>
           <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl md:text-hero font-bold text-foreground">AI Generated Prompt</h1>
-            <p className="text-sm sm:text-base text-muted-foreground mt-2">Here's the prompt that would be sent to the AI based on your preferences</p>
+            <h1 className="text-2xl sm:text-3xl md:text-hero font-bold text-foreground">Your College Recommendations</h1>
+            <p className="text-sm sm:text-base text-muted-foreground mt-2">AI-generated recommendations based on your preferences</p>
           </div>
         </div>
 
@@ -85,18 +84,19 @@ export function CollegeRecommendations({ formData, onBack }: CollegeRecommendati
           </div>
         </Card>
 
-        {/* AI Prompt Display */}
+        {/* AI Recommendations Display */}
         <Card className="p-4 sm:p-6 md:p-8 border border-border bg-card">
-          <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Generated AI Prompt:</h3>
+          <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">AI Recommendations:</h3>
           <div className="bg-muted/30 p-4 sm:p-6 rounded-lg border border-border">
-            <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground font-mono leading-relaxed overflow-x-auto">
-              {aiPrompt}
-            </pre>
-          </div>
-          <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-xs sm:text-sm text-yellow-800">
-              <strong>Note:</strong> This prompt would be sent to an AI service (like OpenAI, Claude, etc.) to generate personalized college recommendations based on your preferences. The AI would analyze your requirements and return a list of suitable colleges with detailed explanations.
-            </p>
+            <div className="prose prose-sm sm:prose-base max-w-none text-foreground">
+              {aiResponse ? (
+                <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground leading-relaxed overflow-x-auto">
+                  {aiResponse}
+                </pre>
+              ) : (
+                <p className="text-muted-foreground">No recommendations generated yet.</p>
+              )}
+            </div>
           </div>
         </Card>
 
@@ -105,8 +105,11 @@ export function CollegeRecommendations({ formData, onBack }: CollegeRecommendati
           <Button onClick={onBack} variant="outline" className="flex-1 py-3 text-sm sm:text-base">
             Refine Preferences
           </Button>
-          <Button className="flex-1 bg-foreground text-background hover:bg-foreground/90 py-3 text-sm sm:text-base">
-            Send to AI (Not Implemented)
+          <Button 
+            onClick={() => window.print()} 
+            className="flex-1 bg-foreground text-background hover:bg-foreground/90 py-3 text-sm sm:text-base"
+          >
+            Print Recommendations
           </Button>
         </div>
       </div>

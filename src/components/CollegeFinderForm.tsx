@@ -97,6 +97,8 @@ Return results as a JSON object with:
 Focus on institutions that match the user's stated preferences and budget range.`;
   };
 
+  const [aiResponse, setAiResponse] = useState<string>('');
+
   const handleSubmit = async () => {
     setIsLoading(true);
     
@@ -105,8 +107,31 @@ Focus on institutions that match the user's stated preferences and budget range.
       const prompt = generateAIPrompt(formData);
       console.log('Generated AI Prompt:', prompt);
       
-      // Simulate API call - replace with actual AI service
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Call Hugging Face Mistral API
+      const response = await fetch('https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer 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',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inputs: prompt,
+          parameters: {
+            max_new_tokens: 2000,
+            temperature: 0.7,
+            return_full_text: false
+          }
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      const generatedText = result[0]?.generated_text || result.generated_text || 'No response generated';
+      
+      setAiResponse(generatedText);
       
       toast({
         title: "Recommendations Generated!",
@@ -115,6 +140,7 @@ Focus on institutions that match the user's stated preferences and budget range.
       
       setShowResults(true);
     } catch (error) {
+      console.error('Error calling Mistral API:', error);
       toast({
         title: "Error",
         description: "Failed to generate recommendations. Please try again.",
@@ -126,7 +152,7 @@ Focus on institutions that match the user's stated preferences and budget range.
   };
 
   if (showResults) {
-    return <CollegeRecommendations formData={formData} onBack={() => setShowResults(false)} />;
+    return <CollegeRecommendations formData={formData} aiResponse={aiResponse} onBack={() => setShowResults(false)} />;
   }
 
   return (
