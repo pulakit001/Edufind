@@ -7,7 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
-import { Plus, X } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Plus, X, GraduationCap, BookOpen, MapPin, DollarSign, Building, FileText, Target, MessageSquare, Award } from "lucide-react";
 import { useState } from "react";
 import type { FormData } from "./CollegeFinderForm";
 
@@ -110,22 +111,46 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
     switch (step) {
       case 0:
         return (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-section-title mb-4 text-foreground">What level of education are you planning to pursue?</h2>
-              <p className="text-subtle mb-6 text-lg">Choose the degree level that matches your goals and aspirations</p>
-              <Select value={formData.educationLevel} onValueChange={(value) => updateFormData('educationLevel', value)}>
-                <SelectTrigger className="form-input text-lg h-14">
-                  <SelectValue placeholder="Select education level" />
-                </SelectTrigger>
-                <SelectContent className="bg-card border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-                  {educationLevels.map(level => (
-                    <SelectItem key={level} value={level} className="p-3 hover:bg-muted rounded-md">
-                      {level}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          <div className="space-y-6">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <GraduationCap className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">What level of education are you planning to pursue?</h2>
+              <p className="text-muted-foreground text-sm md:text-base">Choose the degree level that matches your goals and aspirations</p>
+            </div>
+
+            <div className="grid gap-3">
+              {educationLevels.map((level, index) => {
+                const isSelected = formData.educationLevel === level;
+                return (
+                  <Card 
+                    key={level}
+                    className={`p-4 cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${
+                      isSelected 
+                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-950/30' 
+                        : 'border-border hover:border-violet-200'
+                    }`}
+                    onClick={() => updateFormData('educationLevel', level)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                          isSelected ? 'border-violet-500 bg-violet-500' : 'border-muted-foreground'
+                        }`}>
+                          {isSelected && <div className="w-3 h-3 bg-white rounded-full" />}
+                        </div>
+                        <span className="font-medium text-sm md:text-base">{level}</span>
+                      </div>
+                      {isSelected && (
+                        <div className="text-violet-500 text-xs font-medium px-2 py-1 bg-violet-100 dark:bg-violet-900/50 rounded-full">
+                          Selected
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         );
@@ -133,19 +158,45 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
       case 1:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Academic Stream</h2>
-              <p className="text-subtle mb-4">What field are you most interested in?</p>
-              <Select value={formData.academicStream} onValueChange={(value) => updateFormData('academicStream', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select academic stream" />
-                </SelectTrigger>
-                <SelectContent className="bg-card border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-                  {academicStreams.map(stream => (
-                    <SelectItem key={stream} value={stream} className="p-3 hover:bg-muted rounded-md">{stream}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <BookOpen className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Academic Stream</h2>
+              <p className="text-muted-foreground text-sm md:text-base">What field are you most interested in?</p>
+            </div>
+
+            <div className="grid gap-3">
+              {academicStreams.map((stream) => {
+                const isSelected = formData.academicStream === stream;
+                return (
+                  <Card 
+                    key={stream}
+                    className={`p-4 cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${
+                      isSelected 
+                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-950/30' 
+                        : 'border-border hover:border-violet-200'
+                    }`}
+                    onClick={() => updateFormData('academicStream', stream)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                          isSelected ? 'border-violet-500 bg-violet-500' : 'border-muted-foreground'
+                        }`}>
+                          {isSelected && <div className="w-3 h-3 bg-white rounded-full" />}
+                        </div>
+                        <span className="font-medium text-sm md:text-base">{stream}</span>
+                      </div>
+                      {isSelected && (
+                        <div className="text-violet-500 text-xs font-medium px-2 py-1 bg-violet-100 dark:bg-violet-900/50 rounded-full">
+                          Selected
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         );
@@ -153,80 +204,140 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
       case 2:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Specific Majors / Subjects</h2>
-              <p className="text-subtle mb-4">Select all majors that interest you</p>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-                {majorOptions.map(major => (
-                  <div key={major} className="flex items-center space-x-2 p-2 hover:bg-muted/50 rounded">
-                    <Checkbox 
-                      checked={formData.specificMajors.includes(major)}
-                      onCheckedChange={() => {
-                        if (formData.specificMajors.includes(major)) {
-                          removeMajor(major);
-                        } else {
-                          updateFormData('specificMajors', [...formData.specificMajors, major]);
-                        }
-                      }}
-                    />
-                    <label className="text-sm cursor-pointer flex-1">{major}</label>
-                  </div>
-                ))}
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <Target className="w-8 h-8 text-white" />
               </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Specific Majors / Subjects</h2>
+              <p className="text-muted-foreground text-sm md:text-base">Select all majors that interest you</p>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              {majorOptions.map(major => {
+                const isSelected = formData.specificMajors.includes(major);
+                return (
+                  <Card 
+                    key={major}
+                    className={`p-3 cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${
+                      isSelected 
+                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-950/30' 
+                        : 'border-border hover:border-violet-200'
+                    }`}
+                    onClick={() => {
+                      if (isSelected) {
+                        removeMajor(major);
+                      } else {
+                        updateFormData('specificMajors', [...formData.specificMajors, major]);
+                      }
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                        isSelected ? 'border-violet-500 bg-violet-500' : 'border-muted-foreground'
+                      }`}>
+                        {isSelected && <div className="w-2 h-2 bg-white rounded-sm" />}
+                      </div>
+                      <span className="font-medium text-sm">{major}</span>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
 
-              <div className="flex flex-col sm:flex-row gap-2 mb-4">
+            <Card className="p-4 border-2 border-dashed border-violet-200 bg-violet-50/50 dark:bg-violet-950/20">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Input 
                   placeholder="Add custom major"
                   value={customMajor}
                   onChange={(e) => setCustomMajor(e.target.value)}
-                  className="flex-1"
+                  className="flex-1 border-violet-200 focus:border-violet-500"
                 />
-                <Button onClick={addMajor} size="icon" variant="outline" className="w-10 h-10 sm:w-auto sm:h-auto sm:px-3">
-                  <Plus className="w-4 h-4" />
-                  <span className="hidden sm:inline ml-1">Add</span>
+                <Button 
+                  onClick={addMajor} 
+                  className="bg-violet-500 hover:bg-violet-600 text-white px-6"
+                  disabled={!customMajor.trim()}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Major
                 </Button>
               </div>
+            </Card>
 
-              <div className="flex flex-wrap gap-2">
-                {formData.specificMajors.map(major => (
-                  <Badge key={major} variant="secondary" className="pr-1">
-                    {major}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-auto p-1 ml-1"
-                      onClick={() => removeMajor(major)}
+            {formData.specificMajors.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-sm text-muted-foreground">Selected Majors:</h3>
+                <div className="flex flex-wrap gap-2">
+                  {formData.specificMajors.map(major => (
+                    <Badge 
+                      key={major} 
+                      className="bg-violet-100 text-violet-700 hover:bg-violet-200 dark:bg-violet-900/50 dark:text-violet-300 px-3 py-1"
                     >
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </Badge>
-                ))}
+                      {major}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-auto p-0 ml-2 hover:bg-transparent"
+                        onClick={() => removeMajor(major)}
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </Badge>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
 
       case 3:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Program Structure Preference</h2>
-              <p className="text-subtle mb-4">What type of program structure do you prefer?</p>
-              <RadioGroup value={formData.programPreference} onValueChange={(value) => updateFormData('programPreference', value)}>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="single-major" id="single" />
-                  <Label htmlFor="single">Single-major program (e.g., B.Sc. Physics)</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="double-major" id="double" />
-                  <Label htmlFor="double">Double-major / Interdisciplinary program (e.g., Economics + Data Science)</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="undecided" id="undecided" />
-                  <Label htmlFor="undecided">Undecided / Open to recommendations</Label>
-                </div>
-              </RadioGroup>
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <Building className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Program Structure Preference</h2>
+              <p className="text-muted-foreground text-sm md:text-base">What type of program structure do you prefer?</p>
+            </div>
+
+            <div className="grid gap-4">
+              {[
+                { value: "single-major", label: "Single-major program", desc: "e.g., B.Sc. Physics" },
+                { value: "double-major", label: "Double-major / Interdisciplinary program", desc: "e.g., Economics + Data Science" },
+                { value: "undecided", label: "Undecided / Open to recommendations", desc: "We'll help you decide" }
+              ].map((option) => {
+                const isSelected = formData.programPreference === option.value;
+                return (
+                  <Card 
+                    key={option.value}
+                    className={`p-4 cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${
+                      isSelected 
+                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-950/30' 
+                        : 'border-border hover:border-violet-200'
+                    }`}
+                    onClick={() => updateFormData('programPreference', option.value)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                          isSelected ? 'border-violet-500 bg-violet-500' : 'border-muted-foreground'
+                        }`}>
+                          {isSelected && <div className="w-3 h-3 bg-white rounded-full" />}
+                        </div>
+                        <div>
+                          <div className="font-medium text-sm md:text-base">{option.label}</div>
+                          <div className="text-xs text-muted-foreground">{option.desc}</div>
+                        </div>
+                      </div>
+                      {isSelected && (
+                        <div className="text-violet-500 text-xs font-medium px-2 py-1 bg-violet-100 dark:bg-violet-900/50 rounded-full">
+                          Selected
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         );
@@ -234,48 +345,60 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
       case 4:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Preferred Location</h2>
-              <p className="text-subtle mb-4">Where would you like to study?</p>
-               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="sm:col-span-2">
-                  <Label htmlFor="country">Country *</Label>
-                  <Input 
-                    id="country"
-                    placeholder="e.g., India, USA, Canada"
-                    value={formData.location.country}
-                    onChange={(e) => updateLocation('country', e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="state">State / Province</Label>
-                  <Input 
-                    id="state"
-                    placeholder="e.g., Karnataka, California"
-                    value={formData.location.state}
-                    onChange={(e) => updateLocation('state', e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="city">City / Region</Label>
-                  <Input 
-                    id="city"
-                    placeholder="e.g., Bangalore, New York"
-                    value={formData.location.city}
-                    onChange={(e) => updateLocation('city', e.target.value)}
-                  />
-                </div>
-                <div className="sm:col-span-2">
-                  <Label htmlFor="details">Additional location preferences</Label>
-                  <Textarea 
-                    id="details"
-                    placeholder="e.g., Prefer colleges near tech hubs with good weather and startup ecosystem"
-                    value={formData.location.freeText}
-                    onChange={(e) => updateLocation('freeText', e.target.value)}
-                    rows={3}
-                  />
-                </div>
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <MapPin className="w-8 h-8 text-white" />
               </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Preferred Location</h2>
+              <p className="text-muted-foreground text-sm md:text-base">Where would you like to study?</p>
+            </div>
+
+            <div className="space-y-4">
+               <Card className="p-6 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 border-violet-200">
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="country" className="text-sm font-semibold text-violet-700 dark:text-violet-300">Country *</Label>
+                    <Input 
+                      id="country"
+                      placeholder="e.g., India, USA, Canada"
+                      value={formData.location.country}
+                      onChange={(e) => updateLocation('country', e.target.value)}
+                      className="mt-2 border-violet-200 focus:border-violet-500 bg-white dark:bg-gray-800"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="state" className="text-sm font-semibold text-violet-700 dark:text-violet-300">State / Province</Label>
+                    <Input 
+                      id="state"
+                      placeholder="e.g., Karnataka, California"
+                      value={formData.location.state}
+                      onChange={(e) => updateLocation('state', e.target.value)}
+                      className="mt-2 border-violet-200 focus:border-violet-500 bg-white dark:bg-gray-800"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="city" className="text-sm font-semibold text-violet-700 dark:text-violet-300">City / Region</Label>
+                    <Input 
+                      id="city"
+                      placeholder="e.g., Bangalore, New York"
+                      value={formData.location.city}
+                      onChange={(e) => updateLocation('city', e.target.value)}
+                      className="mt-2 border-violet-200 focus:border-violet-500 bg-white dark:bg-gray-800"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="details" className="text-sm font-semibold text-violet-700 dark:text-violet-300">Additional location preferences</Label>
+                    <Textarea 
+                      id="details"
+                      placeholder="e.g., Prefer colleges near tech hubs with good weather and startup ecosystem"
+                      value={formData.location.freeText}
+                      onChange={(e) => updateLocation('freeText', e.target.value)}
+                      rows={3}
+                      className="mt-2 border-violet-200 focus:border-violet-500 bg-white dark:bg-gray-800"
+                    />
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
         );
@@ -283,47 +406,95 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
       case 5:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Annual Tuition Budget</h2>
-              <p className="text-subtle mb-4">What's your budget for annual tuition fees?</p>
-              <div className="space-y-4">
-                <div className="text-center">
-                  <span className="text-2xl font-semibold">₹{formData.budget.selected.toLocaleString()}</span>
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <DollarSign className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Annual Tuition Budget</h2>
+              <p className="text-muted-foreground text-sm md:text-base">What's your budget for annual tuition fees?</p>
+            </div>
+
+            <Card className="p-6 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 border-violet-200">
+              <div className="text-center mb-6">
+                <div className="text-4xl md:text-5xl font-bold text-violet-600 mb-2">
+                  ₹{formData.budget.selected.toLocaleString()}
                 </div>
+                <p className="text-sm text-muted-foreground">per year</p>
+              </div>
+              
+              <div className="space-y-6">
                 <Slider
                   value={[formData.budget.selected]}
                   onValueChange={updateBudget}
                   max={3000000}
                   min={50000}
                   step={25000}
-                  className="w-full"
+                  className="w-full [&>span:first-child]:bg-violet-200 [&>span:first-child]:h-3 [&>span:first-child]:rounded-full [&_[data-orientation=horizontal]]:bg-violet-500 [&_[data-orientation=horizontal]]:h-3 [&_[data-orientation=horizontal]]:rounded-full"
                 />
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>₹50,000</span>
-                  <span>₹30,00,000</span>
+                
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span className="bg-white dark:bg-gray-800 px-2 py-1 rounded-full">₹50K</span>
+                  <span className="bg-white dark:bg-gray-800 px-2 py-1 rounded-full">₹30L</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 mt-6">
+                  {[
+                    { label: "Budget Range", value: "Flexible" },
+                    { label: "Includes", value: "Tuition only" },
+                  ].map((item, index) => (
+                    <div key={index} className="text-center p-3 bg-white dark:bg-gray-800 rounded-lg">
+                      <div className="text-xs text-muted-foreground">{item.label}</div>
+                      <div className="font-semibold text-sm">{item.value}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         );
 
       case 6:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Type of College / University</h2>
-              <p className="text-subtle mb-4">What type of institutions are you considering?</p>
-              <div className="space-y-3">
-                {collegeTypes.map(type => (
-                  <div key={type} className="flex items-center space-x-2">
-                    <Checkbox 
-                      checked={formData.collegeType.includes(type)}
-                      onCheckedChange={() => toggleCollegeType(type)}
-                    />
-                    <label className="text-sm">{type}</label>
-                  </div>
-                ))}
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <Building className="w-8 h-8 text-white" />
               </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Type of College / University</h2>
+              <p className="text-muted-foreground text-sm md:text-base">What type of institutions are you considering?</p>
+            </div>
+
+            <div className="grid gap-3">
+              {collegeTypes.map(type => {
+                const isSelected = formData.collegeType.includes(type);
+                return (
+                  <Card 
+                    key={type}
+                    className={`p-4 cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${
+                      isSelected 
+                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-950/30' 
+                        : 'border-border hover:border-violet-200'
+                    }`}
+                    onClick={() => toggleCollegeType(type)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                          isSelected ? 'border-violet-500 bg-violet-500' : 'border-muted-foreground'
+                        }`}>
+                          {isSelected && <div className="w-2 h-2 bg-white rounded-sm" />}
+                        </div>
+                        <span className="font-medium text-sm md:text-base">{type}</span>
+                      </div>
+                      {isSelected && (
+                        <div className="text-violet-500 text-xs font-medium px-2 py-1 bg-violet-100 dark:bg-violet-900/50 rounded-full">
+                          Selected
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         );
@@ -331,78 +502,118 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
       case 7:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Entrance Exams & Eligibility</h2>
-              <p className="text-subtle mb-4">Add any entrance exams you've taken or plan to take</p>
-              
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <Award className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Entrance Exams & Eligibility</h2>
+              <p className="text-muted-foreground text-sm md:text-base">Add any entrance exams you've taken or plan to take</p>
+            </div>
+            
+            <Card className="p-6 border-2 border-dashed border-violet-200 bg-violet-50/50 dark:bg-violet-950/20">
               <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row gap-2">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <Input 
                     placeholder="Exam name (e.g., JEE, NEET, SAT)"
                     value={customExam.name}
                     onChange={(e) => setCustomExam({...customExam, name: e.target.value})}
-                    className="flex-1"
+                    className="flex-1 border-violet-200 focus:border-violet-500"
                   />
                   <Input 
                     placeholder="Score/Rank"
                     value={customExam.score}
                     onChange={(e) => setCustomExam({...customExam, score: e.target.value})}
-                    className="flex-1"
+                    className="flex-1 border-violet-200 focus:border-violet-500"
                   />
-                  <Button onClick={addExam} size="icon" variant="outline" className="w-10 h-10 sm:w-auto sm:h-auto sm:px-3">
-                    <Plus className="w-4 h-4" />
-                    <span className="hidden sm:inline ml-1">Add</span>
+                  <Button 
+                    onClick={addExam} 
+                    className="bg-violet-500 hover:bg-violet-600 text-white px-6"
+                    disabled={!customExam.name.trim() || !customExam.score.trim()}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Exam
                   </Button>
                 </div>
+              </div>
+            </Card>
 
+            {formData.exams.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-sm text-muted-foreground">Your Exam Scores:</h3>
                 <div className="space-y-2">
                   {formData.exams.map((exam, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                      <span className="font-medium">{exam.name}: {exam.score}</span>
-                      <Button 
-                        onClick={() => removeExam(index)}
-                        size="sm"
-                        variant="ghost"
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    <Card key={index} className="p-4 bg-white dark:bg-gray-800 border-violet-200">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-semibold text-violet-700 dark:text-violet-300">{exam.name}</div>
+                          <div className="text-sm text-muted-foreground">Score: {exam.score}</div>
+                        </div>
+                        <Button 
+                          onClick={() => removeExam(index)}
+                          size="sm"
+                          variant="ghost"
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </Card>
                   ))}
                 </div>
               </div>
-            </div>
+            )}
           </div>
         );
 
       case 8:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Describe Your Dream College</h2>
-              <p className="text-subtle mb-4">Help us understand what you're looking for in a college experience</p>
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <FileText className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Describe Your Dream College</h2>
+              <p className="text-muted-foreground text-sm md:text-base">Help us understand what you're looking for in a college experience</p>
+            </div>
+
+            <Card className="p-6 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 border-violet-200">
               <Textarea
                 placeholder="Do you want a college in a tech hub or a quiet rural area? Do you want strong placement and startup mentorship? Do you prefer big campuses or smaller ones?"
                 value={formData.dreamCollegeDescription}
                 onChange={(e) => updateFormData('dreamCollegeDescription', e.target.value)}
-                rows={6}
+                rows={8}
+                className="border-violet-200 focus:border-violet-500 bg-white dark:bg-gray-800 text-base"
               />
-            </div>
+              <div className="mt-3 text-xs text-muted-foreground">
+                💡 The more specific you are, the better recommendations we can provide!
+              </div>
+            </Card>
           </div>
         );
 
       case 9:
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-section-title mb-2">Anything Else You'd Like Us to Know</h2>
-              <p className="text-subtle mb-4">Share any additional information that might help us find the perfect college for you</p>
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <MessageSquare className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Anything Else You'd Like Us to Know</h2>
+              <p className="text-muted-foreground text-sm md:text-base">Share any additional information that might help us find the perfect college for you</p>
+            </div>
+
+            <Card className="p-6 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 border-violet-200">
               <Textarea
                 placeholder="I want a campus with AI specialization, affordable fees, and strong startup mentorship. Preferably in Pune or Bangalore."
                 value={formData.additionalInfo}
                 onChange={(e) => updateFormData('additionalInfo', e.target.value)}
-                rows={6}
+                rows={8}
+                className="border-violet-200 focus:border-violet-500 bg-white dark:bg-gray-800 text-base"
               />
-            </div>
+              <div className="mt-3 text-xs text-muted-foreground">
+                🎯 Final thoughts? Special requirements? Let us know!
+              </div>
+            </Card>
           </div>
         );
 

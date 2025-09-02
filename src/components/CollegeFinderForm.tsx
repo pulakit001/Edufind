@@ -156,8 +156,8 @@ Focus on institutions that match the user's stated preferences and budget range.
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-5xl mx-auto p-4 sm:p-6 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
 
         {/* Enhanced Progress Section */}
         <div className="mb-8 sm:mb-12">
@@ -204,12 +204,15 @@ Focus on institutions that match the user's stated preferences and budget range.
 
         {/* Enhanced Form Content */}
         <div className="relative">
-          <Card className="shadow-xl border-2 border-border/30 p-4 sm:p-6 md:p-8 lg:p-10 mb-6 sm:mb-8 bg-gradient-to-br from-card to-muted/10">
-            <FormStep
-              step={currentStep}
-              formData={formData}
-              updateFormData={updateFormData}
-            />
+          <Card className="shadow-2xl border-0 p-6 sm:p-8 md:p-10 lg:p-12 mb-6 sm:mb-8 bg-white dark:bg-gray-900 rounded-3xl overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 to-purple-50/50 dark:from-violet-950/20 dark:to-purple-950/20"></div>
+            <div className="relative z-10">
+              <FormStep
+                step={currentStep}
+                formData={formData}
+                updateFormData={updateFormData}
+              />
+            </div>
           </Card>
         </div>
 
