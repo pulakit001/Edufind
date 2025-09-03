@@ -1,1 +1,4 @@
 project_id = "shsmqlvrafnkywrbgtur"
+
+[functions.generate-college-recommendations]
+verify_jwt = false

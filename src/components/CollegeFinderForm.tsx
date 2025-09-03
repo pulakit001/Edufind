@@ -75,26 +75,27 @@ export function CollegeFinderForm() {
   };
 
   const generateAIPrompt = (data: FormData): string => {
-    return `You are "AdmissionsSense" — an expert global university admissions consultant, career advisor, and data analyst. Based on the following user preferences, recommend the top 10 colleges that best match. Provide reasoning, fit scores, and suggested next steps.
+    const examsInfo = data.exams.length > 0 ? data.exams.map(e => `${e.name}: ${e.score}`).join(', ') : 'None specified';
+    const majorsInfo = data.specificMajors.length > 0 ? data.specificMajors.join(', ') : 'Open to options';
+    const collegeTypesInfo = data.collegeType.length > 0 ? data.collegeType.join(', ') : 'Any type';
+    const locationInfo = [data.location.country, data.location.state, data.location.city].filter(Boolean).join(', ') || 'Flexible';
+    
+    return `You are a College Genie! Give me the top 5 colleges based on these preferences:
 
-Preferences:
-- Education Level: ${data.educationLevel}
-- Academic Stream: ${data.academicStream}
-- Specific Majors: ${data.specificMajors.join(', ')}
-- Program Preference: ${data.programPreference}
-- Location: ${data.location.country} / ${data.location.state} / ${data.location.city} — details: ${data.location.freeText}
-- Budget (annual): ₹${data.budget.selected.toLocaleString()}
-- College Type: ${data.collegeType.join(', ')}
-- Entrance Exams: ${data.exams.map(e => `${e.name}: ${e.score}`).join(', ')}
-- Dream College Description: ${data.dreamCollegeDescription}
-- Additional Notes: ${data.additionalInfo}
+Education: ${data.educationLevel} | Stream: ${data.academicStream} | Majors: ${majorsInfo} | Program: ${data.programPreference}
+Location: ${locationInfo} ${data.location.freeText ? `(${data.location.freeText})` : ''}
+Budget: ₹${data.budget.selected.toLocaleString()}/year | College Type: ${collegeTypesInfo}
+Exams: ${examsInfo} | Dream College: ${data.dreamCollegeDescription || 'Open minded'}
+Additional: ${data.additionalInfo || 'None'}
 
-Return results as a JSON object with:
-1. ranked_colleges: array of objects with name, location, type, fit_score (0-100), fees_estimate, strengths, weaknesses, why_it_fits
-2. summary: string with key insights and recommendations
-3. next_steps: array of actionable items
+Please provide:
+1. Top 5 college recommendations with name, location, and why it matches
+2. Estimated fees for each
+3. Admission requirements
+4. Key strengths of each college
+5. Next steps for applications
 
-Focus on institutions that match the user's stated preferences and budget range.`;
+Make it comprehensive but concise!`;
   };
 
   const [aiResponse, setAiResponse] = useState<string>('');
@@ -103,25 +104,17 @@ Focus on institutions that match the user's stated preferences and budget range.
     setIsLoading(true);
     
     try {
-      // Generate AI prompt
+      // Generate compressed AI prompt
       const prompt = generateAIPrompt(formData);
       console.log('Generated AI Prompt:', prompt);
       
-      // Call Hugging Face Mistral API
-      const response = await fetch('https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2', {
+      // Call Groq AI via Supabase Edge Function
+      const response = await fetch('https://shsmqlvrafnkywrbgtur.supabase.co/functions/v1/generate-college-recommendations', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          inputs: prompt,
-          parameters: {
-            max_new_tokens: 2000,
-            temperature: 0.7,
-            return_full_text: false
-          }
-        }),
+        body: JSON.stringify({ prompt }),
       });
 
       if (!response.ok) {
@@ -129,18 +122,21 @@ Focus on institutions that match the user's stated preferences and budget range.
       }
 
       const result = await response.json();
-      const generatedText = result[0]?.generated_text || result.generated_text || 'No response generated';
       
-      setAiResponse(generatedText);
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to generate recommendations');
+      }
+      
+      setAiResponse(result.recommendation);
       
       toast({
-        title: "Recommendations Generated!",
+        title: "College Genie has spoken! 🧞‍♂️",
         description: "Your personalized college recommendations are ready.",
       });
       
       setShowResults(true);
     } catch (error) {
-      console.error('Error calling Mistral API:', error);
+      console.error('Error calling Groq API:', error);
       toast({
         title: "Error",
         description: "Failed to generate recommendations. Please try again.",
