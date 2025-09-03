@@ -19,9 +19,16 @@ serve(async (req) => {
     const groqApiKey = Deno.env.get('GROQ_API_KEY');
     if (!groqApiKey) {
       console.error('GROQ_API_KEY not found in environment variables');
-      throw new Error('API key not configured');
+      return new Response(JSON.stringify({ 
+        error: 'API key not configured',
+        success: false 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
+    console.log('Making request to Groq API...');
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -29,7 +36,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'llama3-8b-8192',
+        model: 'llama-3.1-8b-instant',
         messages: [
           {
             role: 'system',
@@ -48,7 +55,13 @@ serve(async (req) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Groq API error:', response.status, errorText);
-      throw new Error(`Groq API error: ${response.status}`);
+      return new Response(JSON.stringify({ 
+        error: `Groq API error: ${response.status} - ${errorText}`,
+        success: false 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const data = await response.json();
@@ -56,7 +69,14 @@ serve(async (req) => {
     
     const recommendation = data.choices?.[0]?.message?.content;
     if (!recommendation) {
-      throw new Error('No recommendation generated');
+      console.error('No recommendation content in response:', data);
+      return new Response(JSON.stringify({ 
+        error: 'No recommendation generated from AI model',
+        success: false 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     return new Response(JSON.stringify({ 
@@ -69,7 +89,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in generate-college-recommendations function:', error);
     return new Response(JSON.stringify({ 
-      error: error.message,
+      error: `Function error: ${error.message}`,
       success: false 
     }), {
       status: 500,
