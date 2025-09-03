@@ -2,3 +2,6 @@ project_id = "shsmqlvrafnkywrbgtur"
 
 [functions.generate-college-recommendations]
 verify_jwt = false
+
+[functions.generate-college-comparison]
+verify_jwt = false

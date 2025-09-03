@@ -42,7 +42,8 @@ export function CollegeComparison() {
   ]);
   const [metrics, setMetrics] = useState<ComparisonMetric[]>(defaultMetrics);
   const [customMetric, setCustomMetric] = useState('');
-  const [comparisonPrompt, setComparisonPrompt] = useState<string>('');
+  const [aiResponse, setAiResponse] = useState<string>('');
+  const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -73,17 +74,19 @@ export function CollegeComparison() {
     const collegeNames = colleges.filter(c => c.name).map(c => c.name);
     const selectedMetrics = metrics.filter(m => m.selected).map(m => m.name);
     
-    return `You are an expert education consultant. Compare the following colleges based on the selected metrics:
+    return `You are a College Comparison Expert! Compare these colleges based on the selected metrics:
 
 Colleges: ${collegeNames.join(', ')}
-Metrics: ${selectedMetrics.join(', ')}
+Comparison Metrics: ${selectedMetrics.join(', ')}
 
-Return a detailed comparison table with normalized scores and a concise summary explaining which college is better for which metric. Include pros and cons for each college.
+Please provide:
+1. Detailed comparison table with ratings (1-10) for each metric
+2. Pros and cons for each college
+3. Cost comparison and value for money analysis
+4. Which college is best for different student profiles
+5. Final recommendations with reasoning
 
-Format the response as:
-1. Comparison table with ratings/values for each metric
-2. Summary paragraph highlighting key differences
-3. Recommendations based on different student priorities`;
+Make it comprehensive but easy to understand!`;
   };
 
   const handleCompare = async () => {
@@ -113,17 +116,37 @@ Format the response as:
     try {
       // Generate comparison prompt
       const prompt = generateComparisonPrompt();
-      setComparisonPrompt(prompt);
-
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      toast({
-        title: "Comparison Prompt Generated!",
-        description: "You can now copy this prompt to use with ChatGPT or other AI services.",
+      console.log('Generated AI Prompt:', prompt);
+      
+      // Call Groq AI via Supabase Edge Function
+      const response = await fetch('https://shsmqlvrafnkywrbgtur.supabase.co/functions/v1/generate-college-comparison', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt }),
       });
 
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to generate comparison');
+      }
+      
+      setAiResponse(result.comparison);
+      
+      toast({
+        title: "Comparison Expert has analyzed! 🎓",
+        description: "Your detailed college comparison is ready.",
+      });
+      
+      setShowResults(true);
     } catch (error) {
+      console.error('Error calling Groq API:', error);
       toast({
         title: "Error",
         description: "Failed to generate comparison. Please try again.",
@@ -143,7 +166,7 @@ Format the response as:
           <p className="text-sm sm:text-base text-muted-foreground px-4">Add up to 3 colleges and select comparison metrics</p>
         </div>
 
-        {!comparisonPrompt ? (
+        {!showResults ? (
           <>
             {/* College Inputs */}
             <Card className="p-6 mb-6">
@@ -207,51 +230,73 @@ Format the response as:
                 className="w-full sm:w-auto px-8 sm:px-12 py-3 bg-accent text-accent-foreground hover:bg-accent/90"
                 size="lg"
               >
-                {isLoading ? 'Generating Prompt...' : 'Generate Comparison Prompt'}
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full animate-spin"></div>
+                    <span className="hidden sm:inline">Generating Comparison...</span>
+                    <span className="sm:hidden">Generating...</span>
+                  </div>
+                ) : (
+                  <>
+                    <span className="hidden sm:inline">Get AI College Comparison ✨</span>
+                    <span className="sm:hidden">Get Comparison ✨</span>
+                  </>
+                )}
               </Button>
             </div>
           </>
         ) : (
           <>
-            {/* Generated Prompt Display */}
+            {/* AI Comparison Results */}
             <Card className="p-4 sm:p-6 mb-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-                <h2 className="text-lg sm:text-section-title">Generated Comparison Prompt</h2>
+                <h2 className="text-lg sm:text-section-title">College Comparison Results</h2>
                 <Button 
-                  onClick={() => setComparisonPrompt('')}
+                  onClick={() => setShowResults(false)}
                   variant="outline"
                   size="sm"
                 >
-                  New Comparison
+                  ← Back to Form
                 </Button>
               </div>
 
+              {/* Colleges Summary */}
+              <div className="mb-6 p-4 bg-muted/30 rounded-lg border">
+                <h3 className="font-semibold mb-2">Compared Colleges:</h3>
+                <div className="flex flex-wrap gap-2">
+                  {colleges.filter(c => c.name).map(college => (
+                    <Badge key={college.id} variant="secondary" className="text-sm">
+                      {college.name}
+                    </Badge>
+                  ))}
+                </div>
+                <div className="mt-2">
+                  <span className="text-sm text-muted-foreground">Metrics: </span>
+                  <span className="text-sm">{metrics.filter(m => m.selected).map(m => m.name).join(', ')}</span>
+                </div>
+              </div>
+
+              {/* AI Response */}
               <div className="bg-muted/30 p-4 sm:p-6 rounded-lg border border-border">
-                <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground font-mono leading-relaxed overflow-x-auto">
-                  {comparisonPrompt}
+                <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground leading-relaxed overflow-x-auto">
+                  {aiResponse}
                 </pre>
               </div>
               
-              <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <p className="text-xs sm:text-sm text-yellow-800">
-                  <strong>Instructions:</strong> Copy this prompt and paste it into ChatGPT, Claude, or any other AI service to get detailed college comparisons. The AI will analyze your selected colleges and metrics to provide comprehensive recommendations.
-                </p>
-              </div>
-
               <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6">
                 <Button 
-                  onClick={() => navigator.clipboard.writeText(comparisonPrompt)}
+                  onClick={() => navigator.clipboard.writeText(aiResponse)}
                   variant="outline"
                   className="flex-1"
                 >
-                  Copy Prompt
+                  Copy Results
                 </Button>
                 <Button 
-                  onClick={() => setComparisonPrompt('')}
+                  onClick={() => window.print()}
                   variant="outline"
                   className="flex-1"
                 >
-                  Generate New Prompt
+                  Print Results
                 </Button>
               </div>
             </Card>
