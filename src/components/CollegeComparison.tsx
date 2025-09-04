@@ -7,6 +7,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X, BarChart3 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { CollegeCard } from "@/components/CollegeCard";
+import { parseAIResponse } from "@/utils/parseAIResponse";
+
+interface CollegeComparisonProps {
+  onSwitchToFinder?: () => void;
+}
 
 interface CollegeInput {
   id: string;
@@ -34,7 +40,7 @@ const defaultMetrics: ComparisonMetric[] = [
 
 // Removed mock comparison data
 
-export function CollegeComparison() {
+export function CollegeComparison({ onSwitchToFinder }: CollegeComparisonProps = {}) {
   const [colleges, setColleges] = useState<CollegeInput[]>([
     { id: '1', name: '' },
     { id: '2', name: '' },
@@ -160,10 +166,17 @@ Make it comprehensive but easy to understand!`;
   return (
     <div className="min-h-screen bg-background pb-6">
       <div className="max-w-6xl mx-auto p-4 sm:p-6">
-        {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">Compare Colleges</h1>
-          <p className="text-sm sm:text-base text-muted-foreground px-4">Add up to 3 colleges and select comparison metrics</p>
+        {/* Header with Navigation */}
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">Compare Colleges</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">Add up to 3 colleges and select comparison metrics</p>
+          </div>
+          {onSwitchToFinder && (
+            <Button variant="outline" onClick={onSwitchToFinder} className="text-sm">
+              Find Colleges
+            </Button>
+          )}
         </div>
 
         {!showResults ? (
@@ -247,10 +260,23 @@ Make it comprehensive but easy to understand!`;
           </>
         ) : (
           <>
-            {/* AI Comparison Results */}
-            <Card className="p-4 sm:p-6 mb-6">
+            {/* College Cards Results */}
+            <div className="mb-8">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-                <h2 className="text-xl font-bold text-foreground">College Comparison Results</h2>
+                <div>
+                  <h2 className="text-xl font-bold text-foreground mb-2">College Comparison Results</h2>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {colleges.filter(c => c.name).map(college => (
+                      <Badge key={college.id} variant="secondary" className="text-sm px-3 py-1">
+                        {college.name}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="text-sm">
+                    <span className="text-muted-foreground">Comparison Metrics: </span>
+                    <span className="text-foreground font-medium">{metrics.filter(m => m.selected).map(m => m.name).join(', ')}</span>
+                  </div>
+                </div>
                 <Button 
                   onClick={() => setShowResults(false)}
                   variant="outline"
@@ -260,36 +286,35 @@ Make it comprehensive but easy to understand!`;
                 </Button>
               </div>
 
-              {/* Colleges Summary */}
-              <div className="mb-6 p-4 bg-gradient-to-br from-card to-muted/30 rounded-lg border">
-                <h3 className="font-semibold mb-3 text-foreground">Compared Colleges</h3>
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {colleges.filter(c => c.name).map(college => (
-                    <Badge key={college.id} variant="secondary" className="text-sm px-3 py-1">
-                      {college.name}
-                    </Badge>
-                  ))}
-                </div>
-                <div className="text-sm">
-                  <span className="text-muted-foreground">Comparison Metrics: </span>
-                  <span className="text-foreground font-medium">{metrics.filter(m => m.selected).map(m => m.name).join(', ')}</span>
-                </div>
+              {/* College Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {parseAIResponse(aiResponse).map((college, index) => (
+                  <CollegeCard key={index} college={college} index={index} />
+                ))}
               </div>
+            </div>
 
-              {/* AI Response */}
-              <div className="bg-muted/20 p-4 sm:p-6 rounded-lg border border-border">
-                <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground leading-relaxed overflow-x-auto">
-                  {aiResponse}
-                </pre>
-              </div>
+            {/* Raw AI Response (Collapsible) */}
+            <Card className="p-4 sm:p-6 bg-muted/20">
+              <details className="group">
+                <summary className="cursor-pointer text-lg font-bold mb-4 text-foreground flex items-center justify-between">
+                  <span>Full Comparison Analysis</span>
+                  <span className="text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="bg-muted/30 p-4 sm:p-6 rounded-lg border border-border">
+                  <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground leading-relaxed overflow-x-auto">
+                    {aiResponse}
+                  </pre>
+                </div>
+              </details>
               
-              <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6">
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
                 <Button 
                   onClick={() => navigator.clipboard.writeText(aiResponse)}
                   variant="outline"
                   className="flex-1"
                 >
-                  Copy Results
+                  Copy Full Analysis
                 </Button>
                 <Button 
                   onClick={() => window.print()}

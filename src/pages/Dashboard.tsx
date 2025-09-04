@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { CollegeFinderForm } from "@/components/CollegeFinderForm";
 import { CollegeComparison } from "@/components/CollegeComparison";
-import { AppBottomNav } from "@/components/AppBottomNav";
 
 const Dashboard = () => {
   const [activeView, setActiveView] = useState<'finder' | 'comparison'>('finder');
@@ -9,20 +8,19 @@ const Dashboard = () => {
   const renderContent = () => {
     switch (activeView) {
       case 'finder':
-        return <CollegeFinderForm />;
+        return <CollegeFinderForm onSwitchToComparison={() => setActiveView('comparison')} />;
       case 'comparison':
-        return <CollegeComparison />;
+        return <CollegeComparison onSwitchToFinder={() => setActiveView('finder')} />;
       default:
-        return <CollegeFinderForm />;
+        return <CollegeFinderForm onSwitchToComparison={() => setActiveView('comparison')} />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background">
       <main className="w-full min-h-screen">
         {renderContent()}
       </main>
-      <AppBottomNav activeView={activeView} onViewChange={setActiveView} />
     </div>
   );
 };

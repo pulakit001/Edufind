@@ -27,6 +27,10 @@ export interface FormData {
   additionalInfo: string;
 }
 
+interface CollegeFinderFormProps {
+  onSwitchToComparison?: () => void;
+}
+
 const initialFormData: FormData = {
   educationLevel: '',
   academicStream: '',
@@ -49,7 +53,7 @@ const initialFormData: FormData = {
   additionalInfo: ''
 };
 
-export function CollegeFinderForm() {
+export function CollegeFinderForm({ onSwitchToComparison }: CollegeFinderFormProps = {}) {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [showResults, setShowResults] = useState(false);
@@ -154,6 +158,19 @@ Make it comprehensive but concise!`;
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
+        
+        {/* Header with Navigation */}
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Find Your Dream College</h1>
+            <p className="text-sm text-muted-foreground">AI-powered recommendations</p>
+          </div>
+          {onSwitchToComparison && (
+            <Button variant="outline" onClick={onSwitchToComparison} className="text-sm">
+              Compare Colleges
+            </Button>
+          )}
+        </div>
 
         {/* Enhanced Progress Section */}
         <div className="mb-8 sm:mb-12">
