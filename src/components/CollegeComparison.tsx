@@ -158,11 +158,11 @@ Make it comprehensive but easy to understand!`;
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-6">
       <div className="max-w-6xl mx-auto p-4 sm:p-6">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-hero text-foreground mb-2">Compare Colleges</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">Compare Colleges</h1>
           <p className="text-sm sm:text-base text-muted-foreground px-4">Add up to 3 colleges and select comparison metrics</p>
         </div>
 
@@ -250,7 +250,7 @@ Make it comprehensive but easy to understand!`;
             {/* AI Comparison Results */}
             <Card className="p-4 sm:p-6 mb-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-                <h2 className="text-lg sm:text-section-title">College Comparison Results</h2>
+                <h2 className="text-xl font-bold text-foreground">College Comparison Results</h2>
                 <Button 
                   onClick={() => setShowResults(false)}
                   variant="outline"
@@ -261,23 +261,23 @@ Make it comprehensive but easy to understand!`;
               </div>
 
               {/* Colleges Summary */}
-              <div className="mb-6 p-4 bg-muted/30 rounded-lg border">
-                <h3 className="font-semibold mb-2">Compared Colleges:</h3>
-                <div className="flex flex-wrap gap-2">
+              <div className="mb-6 p-4 bg-gradient-to-br from-card to-muted/30 rounded-lg border">
+                <h3 className="font-semibold mb-3 text-foreground">Compared Colleges</h3>
+                <div className="flex flex-wrap gap-2 mb-3">
                   {colleges.filter(c => c.name).map(college => (
-                    <Badge key={college.id} variant="secondary" className="text-sm">
+                    <Badge key={college.id} variant="secondary" className="text-sm px-3 py-1">
                       {college.name}
                     </Badge>
                   ))}
                 </div>
-                <div className="mt-2">
-                  <span className="text-sm text-muted-foreground">Metrics: </span>
-                  <span className="text-sm">{metrics.filter(m => m.selected).map(m => m.name).join(', ')}</span>
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Comparison Metrics: </span>
+                  <span className="text-foreground font-medium">{metrics.filter(m => m.selected).map(m => m.name).join(', ')}</span>
                 </div>
               </div>
 
               {/* AI Response */}
-              <div className="bg-muted/30 p-4 sm:p-6 rounded-lg border border-border">
+              <div className="bg-muted/20 p-4 sm:p-6 rounded-lg border border-border">
                 <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground leading-relaxed overflow-x-auto">
                   {aiResponse}
                 </pre>

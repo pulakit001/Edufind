@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Star, MapPin, DollarSign, TrendingUp, Users, Book } from "lucide-react";
-import type { FormData } from "./CollegeFinderForm";
+import { ArrowLeft, Printer, Sparkles } from "lucide-react";
+import { FormData } from "./CollegeFinderForm";
+import { CollegeCard } from "./CollegeCard";
+import { parseAIResponse } from "@/utils/parseAIResponse";
 
 interface CollegeRecommendationsProps {
   formData: FormData;
@@ -40,78 +42,118 @@ Format the response as a comprehensive analysis with actionable recommendations.
 };
 
 export function CollegeRecommendations({ formData, aiResponse, onBack }: CollegeRecommendationsProps) {
+  const parsedColleges = parseAIResponse(aiResponse);
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8">
+    <div className="min-h-screen bg-background pb-6">
+      <div className="max-w-6xl mx-auto p-4 sm:p-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
-          <Button variant="ghost" onClick={onBack} className="flex items-center gap-2 text-sm sm:text-base">
-            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="hidden sm:inline">Back to Form</span>
-            <span className="sm:hidden">Back</span>
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl md:text-hero font-bold text-foreground">Your College Recommendations</h1>
-            <p className="text-sm sm:text-base text-muted-foreground mt-2">AI-generated recommendations based on your preferences</p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2 flex items-center gap-2">
+              <Sparkles className="w-8 h-8 text-accent" />
+              Your Perfect Matches
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground">AI-powered college recommendations just for you</p>
           </div>
-        </div>
-
-        {/* Summary Card */}
-        <Card className="p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 border border-border bg-card">
-          <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-foreground rounded-lg flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-background" />
-            </div>
-            <h2 className="text-lg sm:text-xl font-bold">Your Preferences Summary</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
-              <span className="text-xs sm:text-sm text-muted-foreground block mb-1">Education Level</span>
-              <div className="font-semibold text-sm sm:text-base">{formData.educationLevel}</div>
-            </div>
-            <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
-              <span className="text-xs sm:text-sm text-muted-foreground block mb-1">Academic Stream</span>
-              <div className="font-semibold text-sm sm:text-base">{formData.academicStream}</div>
-            </div>
-            <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
-              <span className="text-xs sm:text-sm text-muted-foreground block mb-1">Budget</span>
-              <div className="font-semibold text-sm sm:text-base">₹{formData.budget.selected.toLocaleString()}</div>
-            </div>
-            <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
-              <span className="text-xs sm:text-sm text-muted-foreground block mb-1">Majors</span>
-              <div className="font-semibold text-sm sm:text-base">{formData.specificMajors.length} selected</div>
-            </div>
-          </div>
-        </Card>
-
-        {/* AI Recommendations Display */}
-        <Card className="p-4 sm:p-6 md:p-8 border border-border bg-card">
-          <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">AI Recommendations:</h3>
-          <div className="bg-muted/30 p-4 sm:p-6 rounded-lg border border-border">
-            <div className="prose prose-sm sm:prose-base max-w-none text-foreground">
-              {aiResponse ? (
-                <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground leading-relaxed overflow-x-auto">
-                  {aiResponse}
-                </pre>
-              ) : (
-                <p className="text-muted-foreground">No recommendations generated yet.</p>
-              )}
-            </div>
-          </div>
-        </Card>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
-          <Button onClick={onBack} variant="outline" className="flex-1 py-3 text-sm sm:text-base">
-            Refine Preferences
-          </Button>
           <Button 
-            onClick={() => window.print()} 
-            className="flex-1 bg-foreground text-background hover:bg-foreground/90 py-3 text-sm sm:text-base"
+            onClick={onBack}
+            variant="outline"
+            className="self-start sm:self-auto"
           >
-            Print Recommendations
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Form
           </Button>
         </div>
+
+        {/* Preferences Summary */}
+        <Card className="p-4 sm:p-6 mb-6 sm:mb-8 bg-gradient-to-br from-card to-muted/30">
+          <h2 className="text-lg font-bold mb-4 text-foreground">Your Search Criteria</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 text-sm">
+            <div className="flex flex-col">
+              <span className="font-medium text-foreground">Education Level</span>
+              <span className="text-muted-foreground">{formData.educationLevel}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-medium text-foreground">Academic Stream</span>
+              <span className="text-muted-foreground">{formData.academicStream}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-medium text-foreground">Budget Range</span>
+              <span className="text-muted-foreground">₹{formData.budget.selected.toLocaleString()}/year</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-medium text-foreground">Preferred Location</span>
+              <span className="text-muted-foreground">
+                {[formData.location.country, formData.location.state, formData.location.city].filter(Boolean).join(', ') || 'Flexible'}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-medium text-foreground">Program Type</span>
+              <span className="text-muted-foreground">{formData.programPreference}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-medium text-foreground">College Type</span>
+              <span className="text-muted-foreground">{formData.collegeType.join(', ') || 'Any'}</span>
+            </div>
+          </div>
+          
+          {formData.specificMajors.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-border/50">
+              <span className="font-medium text-foreground block mb-2">Interested Majors</span>
+              <div className="flex flex-wrap gap-2">
+                {formData.specificMajors.map((major, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {major}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </Card>
+
+        {/* College Cards Grid */}
+        <div className="mb-8">
+          <h2 className="text-xl font-bold mb-6 text-foreground">Top College Recommendations</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {parsedColleges.map((college, index) => (
+              <CollegeCard key={index} college={college} index={index} />
+            ))}
+          </div>
+        </div>
+
+        {/* Raw AI Response (Collapsible) */}
+        <Card className="p-4 sm:p-6 bg-muted/20">
+          <details className="group">
+            <summary className="cursor-pointer text-lg font-bold mb-4 text-foreground flex items-center justify-between">
+              <span>Full AI Analysis</span>
+              <span className="text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div className="bg-muted/30 p-4 sm:p-6 rounded-lg border border-border">
+              <pre className="whitespace-pre-wrap text-xs sm:text-sm text-foreground leading-relaxed overflow-x-auto">
+                {aiResponse}
+              </pre>
+            </div>
+          </details>
+          
+          <div className="flex flex-col sm:flex-row gap-3 mt-6">
+            <Button 
+              onClick={() => navigator.clipboard.writeText(aiResponse)}
+              variant="outline"
+              className="flex-1"
+            >
+              Copy Full Analysis
+            </Button>
+            <Button 
+              onClick={() => window.print()}
+              variant="outline"
+              className="flex-1"
+            >
+              <Printer className="w-4 h-4 mr-2" />
+              Print Results
+            </Button>
+          </div>
+        </Card>
       </div>
     </div>
   );
