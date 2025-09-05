@@ -112,14 +112,61 @@ export function CollegeRecommendations({ formData, aiResponse, onBack }: College
           )}
         </Card>
 
-        {/* College Cards Grid */}
+        {/* AI Results in Single Card */}
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-6 text-foreground">Top College Recommendations</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {parsedColleges.map((college, index) => (
-              <CollegeCard key={index} college={college} index={index} />
-            ))}
-          </div>
+          <Card className="p-6 bg-gradient-to-br from-background to-muted/20 border-border/60">
+            <div className="prose prose-sm max-w-none">
+              <div className="whitespace-pre-wrap text-foreground leading-relaxed space-y-6">
+                {aiResponse.split(/(?=\d+\.\s|\*\*\d+\.|\n\d+\.)/g).filter(section => section.trim()).map((section, index) => {
+                  // Check if this section contains a college (starts with number or has college-like content)
+                  const isCollegeSection = /^\d+\.\s/.test(section.trim()) || section.includes('College') || section.includes('University') || section.includes('Institute');
+                  
+                  if (isCollegeSection) {
+                    const lines = section.trim().split('\n').filter(line => line.trim());
+                    const title = lines[0]?.replace(/^\d+\.\s*\*?\*?/, '').replace(/\*\*/g, '').trim();
+                    
+                    return (
+                      <div key={index} className="bg-card border border-border/40 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow">
+                        <h3 className="text-lg font-bold text-foreground mb-3 text-accent">{title}</h3>
+                        <div className="space-y-3">
+                          {lines.slice(1).map((line, lineIndex) => {
+                            const cleanLine = line.replace(/^\s*[-•]\s*/, '').trim();
+                            
+                            // Check if line contains strength/feature keywords
+                            const isStrength = /strengths?|strong|excell|top|best|renowned|leading|specializ/i.test(cleanLine);
+                            
+                            if (isStrength && cleanLine.length > 10) {
+                              return (
+                                <div key={lineIndex} className="bg-accent/10 border border-accent/20 rounded-md px-3 py-2">
+                                  <span className="text-sm font-medium text-accent-foreground">{cleanLine}</span>
+                                </div>
+                              );
+                            }
+                            
+                            return cleanLine ? (
+                              <p key={lineIndex} className="text-sm text-muted-foreground leading-relaxed">
+                                {cleanLine}
+                              </p>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    );
+                  }
+                  
+                  // For non-college sections (intro text, conclusions, etc.)
+                  return section.trim() ? (
+                    <div key={index} className="text-foreground text-base leading-relaxed">
+                      {section.split('\n').map((line, lineIndex) => 
+                        line.trim() ? <p key={lineIndex} className="mb-2">{line.trim()}</p> : null
+                      )}
+                    </div>
+                  ) : null;
+                })}
+              </div>
+            </div>
+          </Card>
         </div>
 
         {/* Raw AI Response (Collapsible) */}
