@@ -115,66 +115,10 @@ export function CollegeRecommendations({ formData, aiResponse, onBack }: College
         {/* AI Results in Single Card */}
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-6 text-foreground">Top College Recommendations</h2>
-          <Card className="p-6 bg-gradient-to-br from-background to-muted/20 border-border/60">
+          <Card className="p-6 bg-card border border-border/60">
             <div className="prose prose-sm max-w-none">
-              <div className="whitespace-pre-wrap text-foreground leading-relaxed space-y-6">
-                {aiResponse.split(/(?=\d+\.\s|\*\*\d+\.|\n\d+\.)/g).filter(section => section.trim()).map((section, index) => {
-                  // Check if this section contains a college (starts with number or has college-like content)
-                  const isCollegeSection = /^\d+\.\s/.test(section.trim()) || section.includes('College') || section.includes('University') || section.includes('Institute');
-                  
-                  if (isCollegeSection) {
-                    const lines = section.trim().split('\n').filter(line => line.trim());
-                    const title = lines[0]?.replace(/^\d+\.\s*\*?\*?/, '').replace(/\*\*/g, '').trim();
-                    
-                    // Generate a match score between 75-98%
-                    const matchScore = Math.floor(Math.random() * 24) + 75;
-                    
-                    return (
-                      <div key={index} className="bg-card border border-border/40 rounded-lg p-5 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                        <div className="flex items-start justify-between mb-3">
-                          <h3 className="text-lg font-bold text-foreground flex-1">{title}</h3>
-                          <div className="bg-gradient-to-r from-accent to-accent/80 text-accent-foreground px-3 py-1 rounded-full text-sm font-bold shadow-md">
-                            {matchScore}% Match
-                          </div>
-                        </div>
-                        <div className="space-y-3">
-                          {lines.slice(1).map((line, lineIndex) => {
-                            const cleanLine = line.replace(/^\s*[-•]\s*/, '').trim();
-                            
-                            // Check if line contains strength/feature keywords
-                            const isStrength = /strengths?|strong|excell|top|best|renowned|leading|specializ|advantage|notable|standout/i.test(cleanLine);
-                            
-                            if (isStrength && cleanLine.length > 10) {
-                              return (
-                                <div key={lineIndex} className="bg-gradient-to-r from-accent/20 via-accent/15 to-accent/20 border-2 border-accent/30 rounded-lg px-4 py-3 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-                                    <span className="text-sm font-semibold text-accent-foreground">{cleanLine}</span>
-                                  </div>
-                                </div>
-                              );
-                            }
-                            
-                            return cleanLine ? (
-                              <p key={lineIndex} className="text-sm text-muted-foreground leading-relaxed pl-2 border-l-2 border-border/30">
-                                {cleanLine}
-                              </p>
-                            ) : null;
-                          })}
-                        </div>
-                      </div>
-                    );
-                  }
-                  
-                  // For non-college sections (intro text, conclusions, etc.)
-                  return section.trim() ? (
-                    <div key={index} className="text-foreground text-base leading-relaxed bg-muted/20 rounded-lg p-4 border border-border/30">
-                      {section.split('\n').map((line, lineIndex) => 
-                        line.trim() ? <p key={lineIndex} className="mb-2 first:font-medium first:text-accent">{line.trim()}</p> : null
-                      )}
-                    </div>
-                  ) : null;
-                })}
+              <div className="whitespace-pre-wrap text-foreground leading-relaxed text-sm">
+                {aiResponse}
               </div>
             </div>
           </Card>
