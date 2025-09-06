@@ -296,7 +296,6 @@ Make it comprehensive but easy to understand!`;
                            .replace(/\*(.*?)\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
                            .replace(/(\d+\.\s*[A-Z][^\n]*)/g, '<div class="mb-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg border-l-4 border-primary"><h3 class="font-bold text-lg mb-2">$1</h3></div>')
                            .replace(/(Location:|Why it matches:|Fees:|Admission Requirements:|Annual Fees:|Estimated Fees:|Required Exams:|Strengths:|Considerations:)/gi, '<br><strong class="text-primary font-semibold">$1</strong><br>')
-                           .replace(/([A-Z][A-Z\s]+:)/g, '<h4 class="font-bold text-primary mt-6 mb-3 text-lg">$1</h4>')
                            .replace(/\n\n/g, '<div class="my-4"></div>')
                            .replace(/\n/g, '<br>')
                        }}>
