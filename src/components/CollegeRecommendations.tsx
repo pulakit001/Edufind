@@ -121,7 +121,9 @@ export function CollegeRecommendations({ formData, aiResponse, onBack }: College
                    dangerouslySetInnerHTML={{
                      __html: aiResponse
                        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-foreground">$1</strong>')
+                       .replace(/\*(.*?)\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
                        .replace(/(\d+\.\s*[^\n]+)/g, '<div class="mb-6 p-4 bg-muted/30 rounded-lg border-l-4 border-primary">$1</div>')
+                       .replace(/(Location:|Why it matches:|Fees:|Admission Requirements:|Annual Fees:|Estimated Fees:|Required Exams:|Strengths:|Considerations:)/gi, '<br><strong class="text-primary font-semibold">$1</strong><br>')
                        .replace(/\n\n/g, '<br><br>')
                        .replace(/\n/g, '<br>')
                    }}>
