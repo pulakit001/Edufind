@@ -293,8 +293,12 @@ Make it comprehensive but easy to understand!`;
                        dangerouslySetInnerHTML={{
                          __html: aiResponse
                            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-foreground">$1</strong>')
-                           .replace(/(\d+\.\s*[^\n]+)/g, '<div class="mb-6 p-4 bg-muted/30 rounded-lg border-l-4 border-primary">$1</div>')
-                           .replace(/\n\n/g, '<br><br>')
+                           .replace(/\*(.*?)\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
+                           .replace(/(\|.*?\|)/g, '<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-border/30 bg-muted/20 rounded-lg"><tbody>$1</tbody></table></div>')
+                           .replace(/\|([^|]+)\|/g, '<td class="border border-border/30 px-4 py-3 text-sm">$1</td>')
+                           .replace(/(\d+\.\s*[A-Z][^\n]*)/g, '<div class="mb-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg border-l-4 border-primary"><h3 class="font-bold text-lg mb-2">$1</h3></div>')
+                           .replace(/([A-Z][A-Z\s]+:)/g, '<h4 class="font-bold text-primary mt-6 mb-3 text-lg">$1</h4>')
+                           .replace(/\n\n/g, '<div class="my-4"></div>')
                            .replace(/\n/g, '<br>')
                        }}>
                   </div>
