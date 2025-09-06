@@ -173,7 +173,7 @@ Make it comprehensive but easy to understand!`;
             <p className="text-sm sm:text-base text-muted-foreground">Add up to 3 colleges and select comparison metrics</p>
           </div>
           {onSwitchToFinder && (
-            <Button onClick={onSwitchToFinder} className="text-sm bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button variant="outline" onClick={onSwitchToFinder} className="text-sm">
               Find Colleges
             </Button>
           )}
