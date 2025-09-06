@@ -292,6 +292,8 @@ Make it comprehensive but easy to understand!`;
                   <div className="whitespace-pre-wrap text-foreground leading-loose text-base space-y-6"
                        dangerouslySetInnerHTML={{
                          __html: aiResponse
+                           .replace(/Detailed Comparison Table:[\s\S]*?(?=\n\n[A-Z]|\n\n\d+\.|\n\n\*|$)/g, '')
+                           .replace(/\|.*?\|[\s\S]*?(?=\n\n[A-Z]|\n\n\d+\.|\n\n\*|$)/g, '')
                            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-foreground">$1</strong>')
                            .replace(/\*(.*?)\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
                            .replace(/(\d+\.\s*[A-Z][^\n]*)/g, '<div class="mb-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg border-l-4 border-primary"><h3 class="font-bold text-lg mb-2">$1</h3></div>')
