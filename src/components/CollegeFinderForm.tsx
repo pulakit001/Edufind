@@ -166,7 +166,7 @@ Make it comprehensive but concise!`;
             <p className="text-sm text-muted-foreground">AI-powered recommendations</p>
           </div>
           {onSwitchToComparison && (
-            <Button onClick={onSwitchToComparison} className="text-sm bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button variant="outline" onClick={onSwitchToComparison} className="text-sm">
               Compare Colleges
             </Button>
           )}
