@@ -173,7 +173,7 @@ Make it comprehensive but easy to understand!`;
             <p className="text-sm sm:text-base text-muted-foreground">Add up to 3 colleges and select comparison metrics</p>
           </div>
           {onSwitchToFinder && (
-            <Button variant="outline" onClick={onSwitchToFinder} className="text-sm">
+            <Button onClick={onSwitchToFinder} className="text-sm bg-accent text-accent-foreground hover:bg-accent/90">
               Find Colleges
             </Button>
           )}
@@ -287,10 +287,16 @@ Make it comprehensive but easy to understand!`;
               </div>
 
               {/* AI Results in Single Card */}
-              <Card className="p-6 mb-8 bg-card border border-border/60">
-                <div className="prose prose-sm max-w-none">
-                  <div className="whitespace-pre-wrap text-foreground leading-relaxed text-sm">
-                    {aiResponse}
+              <Card className="p-8 mb-8 bg-card border border-border/60 shadow-sm">
+                <div className="prose prose-lg max-w-none">
+                  <div className="whitespace-pre-wrap text-foreground leading-loose text-base space-y-6"
+                       dangerouslySetInnerHTML={{
+                         __html: aiResponse
+                           .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-foreground">$1</strong>')
+                           .replace(/(\d+\.\s*[^\n]+)/g, '<div class="mb-6 p-4 bg-muted/30 rounded-lg border-l-4 border-primary">$1</div>')
+                           .replace(/\n\n/g, '<br><br>')
+                           .replace(/\n/g, '<br>')
+                       }}>
                   </div>
                 </div>
               </Card>

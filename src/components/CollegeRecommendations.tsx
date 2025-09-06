@@ -115,10 +115,16 @@ export function CollegeRecommendations({ formData, aiResponse, onBack }: College
         {/* AI Results in Single Card */}
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-6 text-foreground">Top College Recommendations</h2>
-          <Card className="p-6 bg-card border border-border/60">
-            <div className="prose prose-sm max-w-none">
-              <div className="whitespace-pre-wrap text-foreground leading-relaxed text-sm">
-                {aiResponse}
+          <Card className="p-8 bg-card border border-border/60 shadow-sm">
+            <div className="prose prose-lg max-w-none">
+              <div className="whitespace-pre-wrap text-foreground leading-loose text-base space-y-6"
+                   dangerouslySetInnerHTML={{
+                     __html: aiResponse
+                       .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-foreground">$1</strong>')
+                       .replace(/(\d+\.\s*[^\n]+)/g, '<div class="mb-6 p-4 bg-muted/30 rounded-lg border-l-4 border-primary">$1</div>')
+                       .replace(/\n\n/g, '<br><br>')
+                       .replace(/\n/g, '<br>')
+                   }}>
               </div>
             </div>
           </Card>
