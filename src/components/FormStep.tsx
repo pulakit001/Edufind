@@ -111,42 +111,44 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
     switch (step) {
       case 0:
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-8">
-              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-lg">
-                <MessageSquare className="w-10 h-10 text-white" />
+          <div className="space-y-6 sm:space-y-8">
+            <div className="text-center mb-6 sm:mb-8">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-lg">
+                <MessageSquare className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">How can we help you today?</h2>
-              <p className="text-muted-foreground text-lg">Choose what you'd like to do with our AI-powered college assistant</p>
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2 sm:mb-4 px-4">How can we help you today?</h2>
+              <p className="text-muted-foreground text-sm sm:text-base lg:text-lg px-4">Choose what you'd like to do with our AI-powered college assistant</p>
             </div>
 
-            <div className="grid gap-6 max-w-2xl mx-auto">
+            <div className="grid gap-4 sm:gap-6 max-w-2xl mx-auto px-4">
+              {/* AI Match Button - More Enticing */}
               <Card 
-                className="p-8 cursor-pointer transition-all duration-300 hover:shadow-xl border-2 border-transparent hover:border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30"
+                className="p-4 sm:p-6 lg:p-8 cursor-pointer transition-all duration-300 hover:shadow-xl border-2 border-transparent hover:border-blue-300 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950/40 dark:to-indigo-950/40 hover:scale-[1.02] active:scale-[0.98]"
                 onClick={() => updateFormData('actionType', 'match')}
               >
-                <div className="flex items-center gap-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Target className="w-8 h-8 text-white" />
+                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                    <Target className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
                   </div>
-                  <div className="flex-1 text-left">
-                    <h3 className="text-xl font-bold text-foreground mb-2">Find My Perfect Match</h3>
-                    <p className="text-muted-foreground">Let AI analyze your profile and recommend the best colleges tailored to your preferences, goals, and qualifications</p>
+                  <div className="flex-1 text-center sm:text-left">
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-1 sm:mb-2">Find My Perfect Match</h3>
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">Let AI analyze your profile and recommend the best colleges tailored to your preferences, goals, and qualifications</p>
                   </div>
                 </div>
               </Card>
 
+              {/* Compare Colleges Button - Less Enticing */}
               <Card 
-                className="p-8 cursor-pointer transition-all duration-300 hover:shadow-xl border-2 border-transparent hover:border-purple-200 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30"
+                className="p-4 sm:p-6 lg:p-8 cursor-pointer transition-all duration-300 hover:shadow-md border border-muted-foreground/20 bg-muted/30 dark:bg-muted/10 hover:bg-muted/50 dark:hover:bg-muted/20"
                 onClick={() => updateFormData('actionType', 'compare')}
               >
-                <div className="flex items-center gap-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Award className="w-8 h-8 text-white" />
+                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-muted-foreground/20 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <Award className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-muted-foreground" />
                   </div>
-                  <div className="flex-1 text-left">
-                    <h3 className="text-xl font-bold text-foreground mb-2">Compare Colleges</h3>
-                    <p className="text-muted-foreground">Get detailed AI-powered comparisons between specific colleges to help you make an informed decision</p>
+                  <div className="flex-1 text-center sm:text-left">
+                    <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-muted-foreground mb-1 sm:mb-2">Compare Colleges</h3>
+                    <p className="text-muted-foreground/80 text-sm leading-relaxed">Get detailed AI-powered comparisons between specific colleges you already have in mind</p>
                   </div>
                 </div>
               </Card>
