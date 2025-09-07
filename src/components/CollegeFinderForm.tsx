@@ -6,6 +6,7 @@ import { CollegeRecommendations } from "@/components/CollegeRecommendations";
 import { useToast } from "@/hooks/use-toast";
 
 export interface FormData {
+  actionType: 'match' | 'compare' | '';
   educationLevel: string;
   academicStream: string;
   specificMajors: string[];
@@ -32,6 +33,7 @@ interface CollegeFinderFormProps {
 }
 
 const initialFormData: FormData = {
+  actionType: '',
   educationLevel: '',
   academicStream: '',
   specificMajors: [],
@@ -60,10 +62,22 @@ export function CollegeFinderForm({ onSwitchToComparison }: CollegeFinderFormPro
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const totalSteps = 10;
+  const totalSteps = 11;
 
   const updateFormData = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Handle action type selection
+    if (field === 'actionType') {
+      if (value === 'compare' && onSwitchToComparison) {
+        onSwitchToComparison();
+        return;
+      }
+      // If match is selected, continue to next step
+      if (value === 'match') {
+        handleNext();
+      }
+    }
   };
 
   const handleNext = () => {
@@ -268,9 +282,10 @@ Make it comprehensive but concise!`;
           ) : (
             <Button
               onClick={handleNext}
-              className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 text-sm sm:text-base btn-gradient rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              disabled={currentStep === 0 && !formData.actionType}
+              className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 text-sm sm:text-base btn-gradient rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              Next →
+              {currentStep === 0 ? (formData.actionType ? 'Continue →' : 'Choose an option') : 'Next →'}
             </Button>
           )}
         </div>

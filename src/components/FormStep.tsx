@@ -111,6 +111,51 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
     switch (step) {
       case 0:
         return (
+          <div className="space-y-8">
+            <div className="text-center mb-8">
+              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-lg">
+                <MessageSquare className="w-10 h-10 text-white" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">How can we help you today?</h2>
+              <p className="text-muted-foreground text-lg">Choose what you'd like to do with our AI-powered college assistant</p>
+            </div>
+
+            <div className="grid gap-6 max-w-2xl mx-auto">
+              <Card 
+                className="p-8 cursor-pointer transition-all duration-300 hover:shadow-xl border-2 border-transparent hover:border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30"
+                onClick={() => updateFormData('actionType', 'match')}
+              >
+                <div className="flex items-center gap-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Target className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="flex-1 text-left">
+                    <h3 className="text-xl font-bold text-foreground mb-2">Find My Perfect Match</h3>
+                    <p className="text-muted-foreground">Let AI analyze your profile and recommend the best colleges tailored to your preferences, goals, and qualifications</p>
+                  </div>
+                </div>
+              </Card>
+
+              <Card 
+                className="p-8 cursor-pointer transition-all duration-300 hover:shadow-xl border-2 border-transparent hover:border-purple-200 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30"
+                onClick={() => updateFormData('actionType', 'compare')}
+              >
+                <div className="flex items-center gap-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Award className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="flex-1 text-left">
+                    <h3 className="text-xl font-bold text-foreground mb-2">Compare Colleges</h3>
+                    <p className="text-muted-foreground">Get detailed AI-powered comparisons between specific colleges to help you make an informed decision</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        );
+
+      case 1:
+        return (
           <div className="space-y-6">
             <div className="text-center mb-8">
               <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
@@ -155,7 +200,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 1:
+      case 2:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -201,7 +246,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 2:
+      case 3:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -289,7 +334,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 3:
+      case 4:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -342,7 +387,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 4:
+      case 5:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -403,7 +448,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 5:
+      case 6:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -453,7 +498,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 6:
+      case 7:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -499,7 +544,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 7:
+      case 8:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -565,7 +610,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 8:
+      case 9:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -591,7 +636,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 9:
+      case 10:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
