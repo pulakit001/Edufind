@@ -169,6 +169,22 @@ Make it comprehensive but concise!`;
     return <CollegeRecommendations formData={formData} aiResponse={aiResponse} onBack={() => setShowResults(false)} />;
   }
 
+  // First question - minimalist fullscreen layout
+  if (currentStep === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="w-full max-w-2xl mx-auto p-6 sm:p-8">
+          <FormStep
+            step={currentStep}
+            formData={formData}
+            updateFormData={updateFormData}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Regular form layout for other steps
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
