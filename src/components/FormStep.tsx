@@ -111,13 +111,16 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
     switch (step) {
       case 0:
         return (
-          <div className="space-y-3 max-w-lg mx-auto px-4">
-            <div className="text-center mb-6">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-2">How can we help you today?</h2>
-              <p className="text-muted-foreground text-sm">Choose what you'd like to do</p>
+          <div className="space-y-3 sm:space-y-4">
+            <div className="text-center mb-3 sm:mb-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              </div>
+              <h2 className="text-base sm:text-lg md:text-xl font-bold text-foreground mb-1 px-4">How can we help you today?</h2>
+              <p className="text-muted-foreground text-xs sm:text-sm px-4">Choose what you'd like to do</p>
             </div>
 
-            <div className="grid gap-3">
+            <div className="grid gap-3 max-w-lg mx-auto px-4">
               {/* AI Match Button - Primary Choice */}
               <button 
                 className="w-full p-4 sm:p-5 rounded-2xl border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 hover:border-blue-300 hover:shadow-lg transition-all duration-300 active:scale-[0.98] group"
@@ -134,12 +137,20 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                 </div>
               </button>
 
-              {/* Compare Colleges Button - Small Secondary */}
+              {/* Compare Colleges Button - Secondary Choice */}
               <button 
-                className="w-full py-2 px-4 rounded-full border border-gray-300 bg-white dark:bg-gray-800 hover:border-gray-400 hover:shadow-sm transition-all duration-200 text-sm text-muted-foreground hover:text-foreground"
+                className="w-full p-4 sm:p-5 rounded-2xl border-2 border-purple-200/60 bg-gradient-to-r from-purple-50/80 to-violet-50/80 dark:from-purple-950/20 dark:to-violet-950/20 hover:border-purple-300 hover:shadow-md transition-all duration-300 active:scale-[0.98] group"
                 onClick={() => updateFormData('actionType', 'compare')}
               >
-                Compare Colleges
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-400 to-violet-500 rounded-xl flex items-center justify-center shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <Award className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                  <div className="flex-1 text-left">
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground mb-1">Compare Colleges</h3>
+                    <p className="text-muted-foreground text-xs sm:text-sm">Side-by-side comparison of specific colleges</p>
+                  </div>
+                </div>
               </button>
             </div>
           </div>
