@@ -172,7 +172,7 @@ Make it comprehensive but concise!`;
   // First question - minimalist fullscreen layout
   if (currentStep === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
         <div className="w-full max-w-2xl mx-auto p-6 sm:p-8">
           <FormStep
             step={currentStep}
@@ -186,7 +186,7 @@ Make it comprehensive but concise!`;
 
   // Regular form layout for other steps
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
         
         {/* Header with Navigation */}
