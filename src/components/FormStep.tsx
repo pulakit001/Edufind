@@ -12,8 +12,6 @@ import { Plus, X, GraduationCap, BookOpen, MapPin, DollarSign, Building, FileTex
 import { useState, useEffect } from "react";
 import type { FormData } from "./CollegeFinderForm";
 import { currencies, detectCurrency, type Currency } from "@/utils/currencies";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface FormStepProps {
   step: number;
@@ -24,20 +22,7 @@ interface FormStepProps {
 export function FormStep({ step, formData, updateFormData }: FormStepProps) {
   const [customMajor, setCustomMajor] = useState('');
   const [customExam, setCustomExam] = useState({ name: '', score: '' });
-  const [currencySearch, setCurrencySearch] = useState('');
-  const [currencyOpen, setCurrencyOpen] = useState(false);
 
-  // Auto-detect currency on mount if not already set
-  useEffect(() => {
-    if (step === 6 && (!formData.currency || !formData.currency.code)) {
-      const detected = detectCurrency();
-      updateFormData('currency', {
-        code: detected.code,
-        symbol: detected.symbol,
-        name: detected.name
-      });
-    }
-  }, [step]);
 
   const educationLevels = [
     "Undergraduate (Bachelor's)",
@@ -489,66 +474,35 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-semibold text-violet-700 dark:text-violet-300">Search Currency</Label>
-                  <Popover open={currencyOpen} onOpenChange={setCurrencyOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={currencyOpen}
-                        className="w-full justify-between border-violet-200 hover:border-violet-500"
-                      >
-                        {formData.currency.code
-                          ? `${formData.currency.symbol} ${formData.currency.code} - ${formData.currency.name}`
-                          : "Select currency..."}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0" align="start">
-                      <Command>
-                        <CommandInput 
-                          placeholder="Search currency or country..." 
-                          value={currencySearch}
-                          onValueChange={setCurrencySearch}
-                        />
-                        <CommandList>
-                          <CommandEmpty>No currency found.</CommandEmpty>
-                          <CommandGroup>
-                            {currencies
-                              .filter(currency => 
-                                currency.name.toLowerCase().includes(currencySearch.toLowerCase()) ||
-                                currency.code.toLowerCase().includes(currencySearch.toLowerCase()) ||
-                                currency.country.toLowerCase().includes(currencySearch.toLowerCase())
-                              )
-                              .map((currency) => (
-                                <CommandItem
-                                  key={currency.code}
-                                  value={currency.code}
-                                  onSelect={() => {
-                                    updateFormData('currency', {
-                                      code: currency.code,
-                                      symbol: currency.symbol,
-                                      name: currency.name
-                                    });
-                                    setCurrencyOpen(false);
-                                    setCurrencySearch('');
-                                  }}
-                                >
-                                  <div className="flex items-center justify-between w-full">
-                                    <div className="flex items-center gap-2">
-                                      <span className="font-bold text-lg">{currency.symbol}</span>
-                                      <div>
-                                        <div className="font-semibold">{currency.code} - {currency.name}</div>
-                                        <div className="text-xs text-muted-foreground">{currency.country}</div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </CommandItem>
-                              ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <Label className="text-sm font-semibold text-violet-700 dark:text-violet-300">Select Currency</Label>
+                  <Select
+                    value={formData.currency.code}
+                    onValueChange={(code) => {
+                      const selected = currencies.find(c => c.code === code);
+                      if (selected) {
+                        updateFormData('currency', {
+                          code: selected.code,
+                          symbol: selected.symbol,
+                          name: selected.name
+                        });
+                      }
+                    }}
+                  >
+                    <SelectTrigger className="w-full border-violet-200 focus:border-violet-500">
+                      <SelectValue placeholder="Select currency" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {currencies.map((currency) => (
+                        <SelectItem key={currency.code} value={currency.code}>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold">{currency.symbol}</span>
+                            <span>{currency.code} - {currency.name}</span>
+                            <span className="text-xs text-muted-foreground">({currency.country})</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="text-xs text-muted-foreground p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200">
