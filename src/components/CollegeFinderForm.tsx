@@ -17,6 +17,11 @@ export interface FormData {
     city: string;
     freeText: string;
   };
+  currency: {
+    code: string;
+    symbol: string;
+    name: string;
+  };
   budget: {
     min: number;
     max: number;
@@ -44,6 +49,11 @@ const initialFormData: FormData = {
     city: '',
     freeText: ''
   },
+  currency: {
+    code: 'INR',
+    symbol: '₹',
+    name: 'Indian Rupee'
+  },
   budget: {
     min: 50000,
     max: 3000000,
@@ -62,7 +72,7 @@ export function CollegeFinderForm({ onSwitchToComparison }: CollegeFinderFormPro
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const totalSteps = 11;
+  const totalSteps = 12;
 
   const updateFormData = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -102,13 +112,16 @@ export function CollegeFinderForm({ onSwitchToComparison }: CollegeFinderFormPro
 
 Education: ${data.educationLevel} | Stream: ${data.academicStream} | Majors: ${majorsInfo} | Program: ${data.programPreference}
 Location: ${locationInfo} ${data.location.freeText ? `(${data.location.freeText})` : ''}
-Budget: ₹${data.budget.selected.toLocaleString()}/year | College Type: ${collegeTypesInfo}
+Currency: ${data.currency.name} (${data.currency.code})
+Budget: ${data.currency.symbol}${data.budget.selected.toLocaleString()}/year | College Type: ${collegeTypesInfo}
 Exams: ${examsInfo} | Dream College: ${data.dreamCollegeDescription || 'Open minded'}
 Additional: ${data.additionalInfo || 'None'}
 
+IMPORTANT: All fees and costs in your response MUST be displayed in ${data.currency.name} (${data.currency.code}) using the ${data.currency.symbol} symbol.
+
 Please provide:
 1. Top 5 college recommendations with name, location, and why it matches
-2. Estimated fees for each
+2. Estimated fees for each (in ${data.currency.code})
 3. Admission requirements
 4. Key strengths of each college
 5. Next steps for applications
