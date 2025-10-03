@@ -11,9 +11,9 @@ import { Card } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Plus, X, GraduationCap, BookOpen, MapPin, DollarSign, Building, FileText, Target, MessageSquare, Award, Coins, Check, ChevronsUpDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { FormData } from "./CollegeFinderForm";
-import { currencies, detectCurrency, type Currency } from "@/utils/currencies";
+import { currencies, type Currency } from "@/utils/currencies";
 import { cn } from "@/lib/utils";
 
 interface FormStepProps {
