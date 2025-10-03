@@ -80,7 +80,7 @@ export function CollegeRecommendations({ formData, aiResponse, onBack }: College
             </div>
             <div className="flex flex-col">
               <span className="font-medium text-foreground">Budget Range</span>
-              <span className="text-muted-foreground">₹{formData.budget.selected.toLocaleString()}/year</span>
+              <span className="text-muted-foreground">{formData.currency.symbol}{formData.budget.selected.toLocaleString()}/year ({formData.currency.code})</span>
             </div>
             <div className="flex flex-col">
               <span className="font-medium text-foreground">Preferred Location</span>
