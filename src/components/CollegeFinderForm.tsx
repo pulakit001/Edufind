@@ -72,7 +72,7 @@ export function CollegeFinderForm({ onSwitchToComparison }: CollegeFinderFormPro
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const totalSteps = 12;
+  const totalSteps = 11;
 
   const updateFormData = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));

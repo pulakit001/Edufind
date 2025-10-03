@@ -8,10 +8,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { Card } from "@/components/ui/card";
-import { Plus, X, GraduationCap, BookOpen, MapPin, DollarSign, Building, FileText, Target, MessageSquare, Award, Coins } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Plus, X, GraduationCap, BookOpen, MapPin, DollarSign, Building, FileText, Target, MessageSquare, Award, Coins, Check, ChevronsUpDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { FormData } from "./CollegeFinderForm";
 import { currencies, detectCurrency, type Currency } from "@/utils/currencies";
+import { cn } from "@/lib/utils";
 
 interface FormStepProps {
   step: number;
@@ -22,6 +25,7 @@ interface FormStepProps {
 export function FormStep({ step, formData, updateFormData }: FormStepProps) {
   const [customMajor, setCustomMajor] = useState('');
   const [customExam, setCustomExam] = useState({ name: '', score: '' });
+  const [currencyOpen, setCurrencyOpen] = useState(false);
 
 
   const educationLevels = [
@@ -475,38 +479,63 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
 
                 <div className="space-y-2">
                   <Label className="text-sm font-semibold text-violet-700 dark:text-violet-300">Select Currency</Label>
-                  <Select
-                    value={formData.currency.code}
-                    onValueChange={(code) => {
-                      const selected = currencies.find(c => c.code === code);
-                      if (selected) {
-                        updateFormData('currency', {
-                          code: selected.code,
-                          symbol: selected.symbol,
-                          name: selected.name
-                        });
-                      }
-                    }}
-                  >
-                    <SelectTrigger className="w-full border-violet-200 focus:border-violet-500">
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-[300px]">
-                      {currencies.map((currency) => (
-                        <SelectItem key={currency.code} value={currency.code}>
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold">{currency.symbol}</span>
-                            <span>{currency.code} - {currency.name}</span>
-                            <span className="text-xs text-muted-foreground">({currency.country})</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Popover open={currencyOpen} onOpenChange={setCurrencyOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={currencyOpen}
+                        className="w-full justify-between border-violet-200 focus:border-violet-500 bg-white dark:bg-gray-800"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="font-bold">{formData.currency.symbol}</span>
+                          <span>{formData.currency.code} - {formData.currency.name}</span>
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0 bg-white dark:bg-gray-800 border-violet-200 z-50">
+                      <Command className="bg-white dark:bg-gray-800">
+                        <CommandInput placeholder="Search currency or country..." className="bg-white dark:bg-gray-800" />
+                        <CommandList className="bg-white dark:bg-gray-800">
+                          <CommandEmpty className="bg-white dark:bg-gray-800">No currency found.</CommandEmpty>
+                          <CommandGroup className="bg-white dark:bg-gray-800">
+                            {currencies.map((currency) => (
+                              <CommandItem
+                                key={currency.code}
+                                value={`${currency.code} ${currency.name} ${currency.country}`}
+                                onSelect={() => {
+                                  updateFormData('currency', {
+                                    code: currency.code,
+                                    symbol: currency.symbol,
+                                    name: currency.name
+                                  });
+                                  setCurrencyOpen(false);
+                                }}
+                                className="bg-white dark:bg-gray-800 hover:bg-violet-50 dark:hover:bg-violet-950/30"
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    formData.currency.code === currency.code ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                <div className="flex items-center gap-2">
+                                  <span className="font-bold">{currency.symbol}</span>
+                                  <span>{currency.code} - {currency.name}</span>
+                                  <span className="text-xs text-muted-foreground">({currency.country})</span>
+                                </div>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 <div className="text-xs text-muted-foreground p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200">
-                  💡 We've auto-detected your currency based on your location. You can change it if needed.
+                  💡 You can search by currency name or country. We've auto-detected your currency based on your location.
                 </div>
               </div>
             </Card>
@@ -609,73 +638,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 8:
-        return (
-          <div className="space-y-6">
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center">
-                <Award className="w-8 h-8 text-white" />
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Entrance Exams & Eligibility</h2>
-              <p className="text-muted-foreground text-sm md:text-base">Add any entrance exams you've taken or plan to take</p>
-            </div>
-            
-            <Card className="p-6 border-2 border-dashed border-violet-200 bg-violet-50/50 dark:bg-violet-950/20">
-              <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Input 
-                    placeholder="Exam name (e.g., JEE, NEET, SAT)"
-                    value={customExam.name}
-                    onChange={(e) => setCustomExam({...customExam, name: e.target.value})}
-                    className="flex-1 border-violet-200 focus:border-violet-500"
-                  />
-                  <Input 
-                    placeholder="Score/Rank"
-                    value={customExam.score}
-                    onChange={(e) => setCustomExam({...customExam, score: e.target.value})}
-                    className="flex-1 border-violet-200 focus:border-violet-500"
-                  />
-                  <Button 
-                    onClick={addExam} 
-                    className="bg-violet-500 hover:bg-violet-600 text-white px-6"
-                    disabled={!customExam.name.trim() || !customExam.score.trim()}
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Exam
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
-            {formData.exams.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="font-semibold text-sm text-muted-foreground">Your Exam Scores:</h3>
-                <div className="space-y-2">
-                  {formData.exams.map((exam, index) => (
-                    <Card key={index} className="p-4 bg-white dark:bg-gray-800 border-violet-200">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="font-semibold text-violet-700 dark:text-violet-300">{exam.name}</div>
-                          <div className="text-sm text-muted-foreground">Score: {exam.score}</div>
-                        </div>
-                        <Button 
-                          onClick={() => removeExam(index)}
-                          size="sm"
-                          variant="ghost"
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <X className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        );
-
-      case 10:
+      case 9:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -701,7 +664,7 @@ export function FormStep({ step, formData, updateFormData }: FormStepProps) {
           </div>
         );
 
-      case 11:
+      case 10:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
